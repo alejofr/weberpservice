@@ -66,13 +66,13 @@ class MonedasCambiosController extends Controller
         for ($i=0; $i < count($results) ; $i++) { 
             $taza = DB::table('wse_monedas_cambios_tazas')->where('id_moneda_cambio', '=', $results[$i]->id_moneda_cambio)
                 ->where('eliminado', '=', false)
-                ->orderBy('fecha_editado', 'DESC')
-                ->select(['id_cambio_taza','monto_tc', 'fecha_editado'])
+                ->orderBy('fecha_tc', 'DESC')
+                ->select(['id_cambio_taza','monto_tc', 'fecha_tc'])
                 ->first();
 
             $results[$i]->id_cambio_taza = ( $taza != null ) ? $taza->id_cambio_taza : '';
             $results[$i]->monto_tc = ( $taza != null ) ? $taza->monto_tc : '';
-            $results[$i]->fecha_editado = ( $taza != null ) ? $taza->fecha_editado : '';
+            $results[$i]->fecha_tc = ( $taza != null ) ? $taza->fecha_tc : '';
         }
 
         return response()->json([
@@ -112,7 +112,8 @@ class MonedasCambiosController extends Controller
         $validator = Validator::make($request->all(), [
             'id_moneda_nc' => ['required'],
             'id_moneda_divisa' => ['required'],
-            'monto_tc' => ['required']
+            'monto_tc' => ['required'],
+            'fecha_tc' => ['required']
         ]);
 
         $consul = MonedasCambios::where('id_moneda_nc', '=', $request->id_moneda_nc)
@@ -144,6 +145,7 @@ class MonedasCambiosController extends Controller
 
         $taza->id_moneda_cambio = $moneda->id_moneda_cambio;
         $taza->monto_tc = $request->monto_tc;
+        $taza->fecha_tc = $request->fecha_tc;
 
         $taza->save();
 

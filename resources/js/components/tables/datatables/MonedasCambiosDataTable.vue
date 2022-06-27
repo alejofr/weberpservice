@@ -17,7 +17,7 @@
                 <span class="" > 1 {{ item.abreviatura_divisa }} = {{ item.monto_tc }} {{ item.abreviatura_nc }}</span>
             </td>
             <td>
-                <span class="" > {{ item.fecha_editado }}</span>
+                <span class="" > {{ item.fecha_tc }}</span>
             </td>
              <td>
                 <div class="btn-list flex-nowrap">

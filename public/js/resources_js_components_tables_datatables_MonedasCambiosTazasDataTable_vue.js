@@ -207,7 +207,7 @@ var render = function () {
         _vm._v(" "),
         _vm._m(0, true),
         _vm._v(" "),
-        _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.fecha_editado))])]),
+        _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.fecha_tc))])]),
       ])
     }),
     0

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->uuid('id_moneda_cambio');
             $table->string('id_cambio_taza_erp')->nullable();
             $table->string('monto_tc', 120);
+            $table->date('fecha_tc');
             $table->boolean('eliminado')->default(false);
             $table->dateTime('fecha_creado');
             $table->dateTime('fecha_editado');

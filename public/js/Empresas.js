@@ -31,6 +31,8 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Corto Empresa'
         }, {
+          name: 'Clave Empresa'
+        }, {
           name: 'Nombre Pais'
         }, {
           name: 'Corto Divisa'
@@ -41,6 +43,9 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Corto Empresa',
           value: 'wse_empresas.nombre_corto'
+        }, {
+          name: 'Clave Empresa',
+          value: 'wse_empresas.clave'
         }, {
           name: 'Nombre Pais',
           value: 'wse_paises.nombre'

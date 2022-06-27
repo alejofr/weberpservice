@@ -39,6 +39,7 @@ class MonedasCambiosTazas extends Model
         'id_moneda_cambio', 
         'id_cambio_taza_erp',
         'monto_tc',
+        'fecha_tc',
         'eliminado',
         'fecha_creado',
         'fecha_editado',

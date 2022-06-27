@@ -39,6 +39,7 @@ class Empresas extends Model
         'id_empresa_erp',
         'nombre_empresa', 
         'nombre_corto',
+        'clave',
         'eliminado',
         'fecha_creado', 
         'fecha_editado',

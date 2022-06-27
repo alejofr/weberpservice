@@ -75,6 +75,18 @@ var Error404 = function Error404() {
               title: 'Monto (taza cambiaria)',
               "for": 'monto_tc'
             }
+          }, {
+            nodo: 'input',
+            type: 'date',
+            validate: 'required',
+            event: 'change',
+            name: 'fecha_tc',
+            value: '',
+            id: 'fecha_tc',
+            label: {
+              title: 'Fecha Tasa de Cambio',
+              "for": 'fecha_tc'
+            }
           }]
         }] //fin row
 
@@ -118,6 +130,7 @@ var Error404 = function Error404() {
           _this2.card.id = id;
           _this2.card.row[0].form[0].disable = true;
           _this2.card.row[0].form[1].value = cambio.monto_tc;
+          _this2.card.row[0].form[2].value = cambio.fecha_tc;
 
           _this2.init_form(cambio.id_moneda_cambio, data);
 

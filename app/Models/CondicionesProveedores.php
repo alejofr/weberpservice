@@ -35,6 +35,7 @@ class CondicionesProveedores extends Model
      */
     protected $fillable = [
         'id_cond_proveedor',
+        'id_cond_proveedor_erp',
         'dias_condiciones',
         'leyenda_condiciones',
         'eliminado',

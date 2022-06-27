@@ -2398,6 +2398,32 @@ var routes = [{
       component: function component() {
         return __webpack_require__.e(/*! import() | ProveedorEditar */ "ProveedorEditar").then(__webpack_require__.bind(__webpack_require__, /*! ../views/operacion/Facturas/FacturasForm.vue */ "./resources/js/views/operacion/Facturas/FacturasForm.vue"));
       }
+    }, //
+    {
+      name: 'OpCargaMasiva',
+      path: 'carga-masiva',
+      component: function component() {
+        return __webpack_require__.e(/*! import() | Operacion */ "Operacion").then(__webpack_require__.bind(__webpack_require__, /*! ../views/operacion/Operacion.vue */ "./resources/js/views/operacion/Operacion.vue"));
+      },
+      children: [{
+        name: 'SubirProveedores',
+        path: 'proveedores',
+        meta: {
+          title: 'Carga Masiva de Proveedores'
+        },
+        component: function component() {
+          return __webpack_require__.e(/*! import() | SubirProveedores */ "SubirProveedores").then(__webpack_require__.bind(__webpack_require__, /*! ../views/operacion/Proveedores/SubirProveedores.vue */ "./resources/js/views/operacion/Proveedores/SubirProveedores.vue"));
+        }
+      }, {
+        name: 'SubirFacturas',
+        path: 'facturas',
+        meta: {
+          title: 'Carga Masiva de Facturas'
+        },
+        component: function component() {
+          return __webpack_require__.e(/*! import() | SubirFacturas */ "SubirFacturas").then(__webpack_require__.bind(__webpack_require__, /*! ../views/operacion/Facturas/SubirFacturas.vue */ "./resources/js/views/operacion/Facturas/SubirFacturas.vue"));
+        }
+      }]
     }]
   }]
 }, {
@@ -31416,7 +31442,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"Inicio":1,"Operacion":1,"Proveedores":1,"Facturas":1,"ProveedorCreate":1,"ProveedorEditar":1,"Configuracion":1,"Paises":1,"PaisesCreate":1,"Monedas":1,"CrearMoneda":1,"Tipos de Cambios":1,"CrearTiposCambios":1,"EditarTazasCambios":1,"Empresas":1,"EmpresasCreate":1,"Cecos":1,"CecosCreate":1,"HeaderComponent":1,"TableComponent":1,"resources_js_components_forms_FormOneComponent_vue":1,"resources_js_components_LoaderComponent_vue":1,"resources_js_components_Error404Component_vue":1,"resources_js_components_AlertMessageComponent_vue":1,"resources_js_components_LoaderWhiteComponent_vue":1,"resources_js_components_tables_datatables_SkeletonDataTables_vue":1,"resources_js_components_tables_pagination_SkeletonPagination_vue":1,"resources_js_components_tables_pagination_PaginationComponent_vue":1,"resources_js_components_ConfirmDeleteModal_vue":1,"resources_js_components_tables_datatables_CecosDataTable_vue":1,"resources_js_components_tables_datatables_EmpresasDataTable_vue":1,"resources_js_components_tables_datatables_FacturasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosTazasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasDataTable_vue":1,"resources_js_components_tables_datatables_PaisesDataTable_vue":1,"resources_js_components_tables_datatables_ProveedoresDataTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"Inicio":1,"Operacion":1,"Proveedores":1,"Facturas":1,"ProveedorCreate":1,"ProveedorEditar":1,"SubirProveedores":1,"SubirFacturas":1,"Configuracion":1,"Paises":1,"PaisesCreate":1,"Monedas":1,"CrearMoneda":1,"Tipos de Cambios":1,"CrearTiposCambios":1,"EditarTazasCambios":1,"Empresas":1,"EmpresasCreate":1,"Cecos":1,"CecosCreate":1,"HeaderComponent":1,"TableComponent":1,"resources_js_components_forms_FormOneComponent_vue":1,"resources_js_components_LoaderComponent_vue":1,"resources_js_components_Error404Component_vue":1,"AlertMessageComponent":1,"LoadMassiveComponenet":1,"resources_js_components_LoaderWhiteComponent_vue":1,"resources_js_components_tables_datatables_SkeletonDataTables_vue":1,"resources_js_components_tables_pagination_SkeletonPagination_vue":1,"resources_js_components_tables_pagination_PaginationComponent_vue":1,"resources_js_components_ConfirmDeleteModal_vue":1,"resources_js_components_tables_datatables_CecosDataTable_vue":1,"resources_js_components_tables_datatables_EmpresasDataTable_vue":1,"resources_js_components_tables_datatables_FacturasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosTazasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasDataTable_vue":1,"resources_js_components_tables_datatables_PaisesDataTable_vue":1,"resources_js_components_tables_datatables_ProveedoresDataTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

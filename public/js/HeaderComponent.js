@@ -168,6 +168,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'HeaderComponent'
 });
@@ -516,6 +525,57 @@ var render = function () {
                                   },
                                   [_vm._v("Carga Manual de Movimientos")]
                                 ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "dropend" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "dropdown-item dropdown-toggle",
+                                      attrs: {
+                                        type: "buton",
+                                        "data-bs-toggle": "dropdown",
+                                        "data-bs-auto-close": "outside",
+                                        role: "button",
+                                        "aria-expanded": "false",
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                        Carga Masiva\n                                        "
+                                      ),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "dropdown-menu" },
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass: "dropdown-item",
+                                          attrs: {
+                                            to: { name: "SubirProveedores" },
+                                          },
+                                        },
+                                        [_vm._v("Proveedores")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass: "dropdown-item",
+                                          attrs: {
+                                            to: { name: "SubirFacturas" },
+                                          },
+                                        },
+                                        [_vm._v("Facturas")]
+                                      ),
+                                    ],
+                                    1
+                                  ),
+                                ]),
                               ],
                               1
                             ),

@@ -42,6 +42,7 @@ var Error404 = function Error404() {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'MonedasForm',
+  //
   data: function data() {
     return {
       componentRender: LoaderComponent,
@@ -71,6 +72,18 @@ var Error404 = function Error404() {
             label: {
               title: 'Selecciona el pais de la moneda',
               "for": 'id_pais'
+            }
+          }, {
+            nodo: 'input',
+            type: 'text',
+            validate: 'required|max:60',
+            event: 'change',
+            name: 'id_moneda_erp',
+            value: '',
+            id: 'id_moneda_erp',
+            label: {
+              title: 'Id Moneda',
+              "for": 'id_moneda_erp'
             }
           }, {
             nodo: 'input',

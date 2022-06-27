@@ -19,6 +19,7 @@ return new class extends Migration
             $table->collation = 'utf8_unicode_ci';
 
             $table->uuid('id_cond_proveedor')->primary();
+            $table->string('id_cond_proveedor_erp')->nullable();
             $table->string('dias_condiciones', 30);
             $table->string('leyenda_condiciones', 60)->unique();
      

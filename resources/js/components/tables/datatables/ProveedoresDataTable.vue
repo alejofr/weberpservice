@@ -5,6 +5,9 @@
                 <input class="form-check-input m-0 align-middle" v-model="getId" type="radio"  name="id" aria-label="Select invoice" style="border: 1px solid rgb(1 5 12 / 34%);cursor:pointer;" :value="item.id_proveedor">
             </td>
              <td>
+                <span class=""> {{ item.id_proveedor_erp }}</span>
+            </td>
+             <td>
                 <span class=""> {{ item.nombre_proveedor }}</span>
             </td>
             <td>

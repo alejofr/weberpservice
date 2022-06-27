@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('id_empresa_erp')->nullable();
             $table->string('nombre_empresa', 80)->unique();
             $table->string('nombre_corto', 40)->nullable();
+            $table->string('clave', 60)->unique();
             $table->boolean('eliminado')->default(false);
             $table->dateTime('fecha_creado');
             $table->dateTime('fecha_editado');

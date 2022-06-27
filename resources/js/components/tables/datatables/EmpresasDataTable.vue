@@ -13,6 +13,9 @@
             <td>
                 <span class=""> {{ item.nombre_corto }}</span>
             </td>
+             <td>
+                <span class=""> {{ item.clave }}</span>
+            </td>
             <td>
                 <span class=""> {{ item.nombre_pais }}</span>
             </td>

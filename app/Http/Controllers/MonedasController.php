@@ -15,6 +15,7 @@ class MonedasController extends Controller
         $select = [
             'wse_paises.id_pais',
             'wse_paises.nombre AS nombre_pais',
+            'wse_monedas.id_moneda_erp',
             'wse_monedas.id_moneda', 
             'wse_monedas.nombre AS nombre_moneda',
             'wse_monedas.abreviatura',
@@ -79,6 +80,7 @@ class MonedasController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id_moneda_erp' => ['required'],
             'id_pais' => ['required', 'unique:wse_monedas'],
             'nombre' => ['required', 'regex:/^[\pL\s\-]+$/u', 'max:60', 'unique:wse_monedas'],
             'abreviatura' => ['required', 'alpha', 'max:60', 'unique:wse_monedas']
@@ -93,6 +95,7 @@ class MonedasController extends Controller
 
         $moneda = new Monedas;
 
+        $moneda->id_moneda_erp = $request->id_moneda_erp;
         $moneda->id_pais = $request->id_pais;
         $moneda->nombre = ucwords($request->nombre);
         $moneda->abreviatura = strtoupper($request->abreviatura);
@@ -110,6 +113,7 @@ class MonedasController extends Controller
         $moneda = Monedas::where('id_moneda', '=', $id)
         ->where('eliminado', '=', false)
         ->select([
+            'id_moneda_erp',
             'id_pais',
             'id_moneda', 
             'nombre',
@@ -145,6 +149,10 @@ class MonedasController extends Controller
             ]);
         }
 
+        $validator = Validator::make($request->all(), [
+            'id_moneda_erp' => ['required'],
+        ]);
+
         if ( isset($validator) && $validator->fails()) {
             return response()->json([
                 'status' => 422,
@@ -153,6 +161,7 @@ class MonedasController extends Controller
         }
 
         $nombre =  $moneda->nombre;
+        $moneda->id_moneda_erp= ( $request->id_moneda_erp != $moneda->id_moneda_erp ) ? $request->id_moneda_erp : $moneda->id_moneda_erp;
         $moneda->id_pais = ( $request->id_pais != $moneda->id_pais ) ? $request->id_pais : $moneda->id_pais;
         $moneda->nombre = ucwords(( $request->nombre != $moneda->nombre ) ? $request->nombre : $moneda->nombre);
         $moneda->abreviatura = strtoupper( ( $request->abreviatura != $moneda->abreviatura ) ? $request->abreviatura : $moneda->abreviatura );

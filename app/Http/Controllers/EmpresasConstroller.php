@@ -21,7 +21,8 @@ class EmpresasConstroller extends Controller
             'wse_empresas.id_empresa_erp',
             'wse_empresas.nombre_empresa',
             'wse_empresas.nombre_corto',
-            'wse_monedas.abreviatura',
+            'wse_empresas.clave',
+            'wse_monedas.abreviatura'
         ];
 
         extract(request()->only(['query', 'limit', 'page', 'orderBy', 'ascending',]));
@@ -100,7 +101,9 @@ class EmpresasConstroller extends Controller
 
         $validator = Validator::make($request->all(), [
             'id_pais' => ['required'],
+            'id_empresa_erp' => ['required'],
             'nombre_empresa' => ['required','max:80', 'unique:wse_empresas'],
+            'clave' => ['required','max:60', 'unique:wse_empresas']
         ]);
 
         if( isset($request->nombre_corto) && $request->nombre_corto != ''){
@@ -121,7 +124,9 @@ class EmpresasConstroller extends Controller
       
 
         $empresa->id_pais = $request->id_pais;
+        $empresa->id_empresa_erp = $request->id_empresa_erp;
         $empresa->nombre_empresa = $request->nombre_empresa;
+        $empresa->clave = $request->clave;
         $empresa->save();
 
 
@@ -137,9 +142,11 @@ class EmpresasConstroller extends Controller
         ->where('eliminado', '=', false)
         ->select([
             'id_empresa',
+            'id_empresa_erp',
             'id_pais', 
             'nombre_empresa', 
-            'nombre_corto'
+            'nombre_corto',
+            'clave'
         ])->first();
 
         return response()->json([
@@ -152,6 +159,10 @@ class EmpresasConstroller extends Controller
     {
         $empresa = Empresas::find($id);
 
+        $validator = Validator::make($request->all(), [
+            'id_empresa_erp' => ['required']
+        ]);
+
         if( $empresa->id_pais != $request->id_pais )
             $empresa->id_pais = $request->id_pais;
 
@@ -159,9 +170,15 @@ class EmpresasConstroller extends Controller
             $validator = Validator::make($request->all(), [
                 'nombre_empresa' => ['required','max:80', 'unique:wse_empresas'],
             ]);
+        }  
+
+        if( $empresa->clave != $request->clave ){
+            $validator = Validator::make($request->all(), [
+                'clave' => ['required','max:60', 'unique:wse_empresas']
+            ]);
         }            
 
-        if( isset($request->nombre_corto) && $request->nombre_corto != ''){
+        if( isset($request->nombre_corto) && $request->nombre_corto != '' && $empresa->nombre_corto != $request->nombre_corto){
             $validator = Validator::make($request->all(), [
                 'nombre_corto' => ['max:40', 'unique:wse_empresas'],
             ]);
@@ -178,6 +195,8 @@ class EmpresasConstroller extends Controller
 
         $nombre_empresa = $empresa->nombre_empresa;
         $empresa->nombre_empresa = $request->nombre_empresa;
+        $empresa->id_empresa_erp = $request->id_empresa_erp;
+        $empresa->clave = $request->clave;
 
         $empresa->update();
 

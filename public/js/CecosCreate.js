@@ -80,6 +80,19 @@ var Error404 = function Error404() {
               title: 'Selecciona la empresa',
               "for": 'id_empresa'
             }
+          }, //
+          {
+            nodo: 'input',
+            type: 'text',
+            validate: 'required|max:60',
+            event: 'change',
+            name: 'id_ceco_erp',
+            value: '',
+            id: 'id_ceco_erp',
+            label: {
+              title: 'Id Ceco',
+              "for": 'id_ceco_erp'
+            }
           }, {
             nodo: 'input',
             type: 'text',
@@ -147,8 +160,9 @@ var Error404 = function Error404() {
           _this2.card.id = id;
           _this2.card.row[0].form[0].value = ceco.id_pais;
           _this2.card.row[0].form[1].value = ceco.id_empresa;
-          _this2.card.row[0].form[2].value = ceco.largo_ceco;
-          _this2.card.row[0].form[3].value = ceco.corto_ceco;
+          _this2.card.row[0].form[2].value = ceco.id_ceco_erp;
+          _this2.card.row[0].form[3].value = ceco.largo_ceco;
+          _this2.card.row[0].form[4].value = ceco.corto_ceco;
 
           _this2.search_empresas(ceco.id_pais);
 

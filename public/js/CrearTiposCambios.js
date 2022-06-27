@@ -94,6 +94,18 @@ var Error404 = function Error404() {
               title: 'Monto Tasa de Cambio',
               "for": 'monto_tc'
             }
+          }, {
+            nodo: 'input',
+            type: 'date',
+            validate: 'required',
+            event: 'change',
+            name: 'fecha_tc',
+            value: '',
+            id: 'fecha_tc',
+            label: {
+              title: 'Fecha Tasa de Cambio',
+              "for": 'fecha_tc'
+            }
           }]
         }] //fin row
 

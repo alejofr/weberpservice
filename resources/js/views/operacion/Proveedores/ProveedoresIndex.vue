@@ -14,14 +14,16 @@ export default {
         return {
             data: {
                 th: [
+                    {name: 'Id Proveedor'},
                     {name: 'Nombre Proveedor'},
                     {name: 'Nit Proveedor'},
                     {name: 'Cond. Proveedor'}
                 ],
                 columns: [
                     {name: 'Nombre Proveedor', value: 'wse_op_proveedores.nombre_proveedor'},
-                    {name: 'Nit Proveedor', value: 'wse_op_proveedores.nit_proveedor'},
-                    {name: 'Cond. Proveedor', value: 'wse_op_conds_proveedores.leyenda_condiciones'}
+                    {name: 'Nit Proveedor', value: 'wse_op_proveedores.nit_proveedor'},//p
+                    {name: 'Cond. Proveedor', value: 'wse_op_conds_proveedores.leyenda_condiciones'},
+                    {name: 'Id Proveedor', value: 'wse_op_proveedores.id_proveedor_erp'},
                 ]
             },
             view: 'ProveedoresDataTable',

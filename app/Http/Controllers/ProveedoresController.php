@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CondicionesProveedores;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,7 @@ use Carbon\Carbon;
 
 class ProveedoresController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $select = [
             'wse_op_conds_proveedores.leyenda_condiciones',
@@ -18,7 +19,8 @@ class ProveedoresController extends Controller
             'wse_op_proveedores.id_cond_proveedor',
             'wse_op_proveedores.id_proveedor_erp',
             'wse_op_proveedores.nombre_proveedor',
-            'wse_op_proveedores.nit_proveedor'
+            'wse_op_proveedores.nit_proveedor',
+            'wse_op_proveedores.id_proveedor_erp'
         ];
 
         extract(request()->only(['query', 'limit', 'page', 'orderBy', 'ascending',]));
@@ -74,7 +76,8 @@ class ProveedoresController extends Controller
             'wse_op_proveedores.id_proveedor',
             'wse_op_proveedores.id_proveedor_erp',
             'wse_op_proveedores.nombre_proveedor',
-            'wse_op_proveedores.nit_proveedor'
+            'wse_op_proveedores.nit_proveedor',
+            'wse_op_proveedores.id_proveedor_erp'
         ];
 
         extract(request()->only(['query']));
@@ -103,6 +106,7 @@ class ProveedoresController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id_cond_proveedor' => ['required'],
+            'id_proveedor_erp' =>  ['required'],
             'nombre_proveedor' => ['required', 'max:80'],
             'nit_proveedor' => ['required','max:40', 'unique:wse_op_proveedores'],
         ]);
@@ -118,6 +122,7 @@ class ProveedoresController extends Controller
         $proveedor = new Proveedores;
 
         $proveedor->id_cond_proveedor = $request->id_cond_proveedor;
+        $proveedor->id_proveedor_erp = $request->id_proveedor_erp;
         $proveedor->nombre_proveedor = $request->nombre_proveedor;
         $proveedor->nit_proveedor = $request->nit_proveedor;
 
@@ -127,6 +132,60 @@ class ProveedoresController extends Controller
             'status' => 200,
             'message' => 'El Proveedor '.$proveedor->nombre_proveedor.' fue agregado con éxito'
         ], 200);
+    }
+
+    public function load(Request $request)
+    {
+        $proveedores = $request->load;
+        //$proveedores = json_decode($proveedores);
+
+        if( count($proveedores)  == 0 ){
+            return response()->json([
+                'status' => 422,
+                'message' => 'Error, El archivo Excel no debe de estar vacios.'
+            ], 422);
+        }
+
+        for ($i=0; $i <count($proveedores) ; $i++) { 
+            
+            $validator = Validator::make($proveedores[$i], [
+                'id_condicion_proveedor' => ['required'],
+                'id_proveedor' =>  ['required'],
+                'nombre_proveedor' => ['required', 'max:80'],
+                'nit_proveedor' => ['required','max:40', 'unique:wse_op_proveedores'],
+            ]);
+
+            if ( isset($validator) && $validator->fails()) {
+                $proveedores[$i]['status'] = 422;
+                $proveedores[$i]['message'] = $validator->errors()->first();
+            }else{
+                $count = CondicionesProveedores::where('id_cond_proveedor_erp', '=', $proveedores[$i]['id_condicion_proveedor'])->where('eliminado', '=', false)->count();
+
+                if( $count > 0 ){
+                    $cond_prov = CondicionesProveedores::where('id_cond_proveedor_erp', '=', $proveedores[$i]['id_condicion_proveedor'])->where('eliminado', '=', false)->first();
+
+                    $proveedor = new Proveedores;
+                    $proveedor->id_cond_proveedor = $cond_prov->id_cond_proveedor;
+                    $proveedor->id_proveedor_erp = $proveedores[$i]['id_proveedor'];
+                    $proveedor->nombre_proveedor = $proveedores[$i]['nombre_proveedor'];
+                    $proveedor->nit_proveedor = $proveedores[$i]['nit_proveedor'];
+
+                    $proveedor->save();
+
+                    $proveedores[$i]['status'] = 200;
+                    $proveedores[$i]['message'] = 'El Proveedor Fue Agregado';
+                }else{
+                    $proveedores[$i]['status'] = 422;
+                    $proveedores[$i]['message'] = 'No se encontro la condicion del proveedor';
+                }
+            }
+        }
+        
+        return response()->json([
+            'status' => 200,
+            'results' => $proveedores
+        ], 200);
+        
     }
 
     public function edit($id)

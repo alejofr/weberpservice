@@ -13,6 +13,9 @@
             <td>
                 <span class="" > {{ item.abreviatura }}</span>
             </td>
+              <td>
+                <span class=""> {{ item.id_moneda_erp }}</span>
+            </td>
         </tr>
     </tbody>
 </template>

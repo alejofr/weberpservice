@@ -84,6 +84,15 @@
                                     <div class="dropdown-menu">
                                         <router-link :to="{ name:'ConfigProveedoresIndex' }" class="dropdown-item">Gestión Proveedores</router-link>
                                         <router-link :to="{ name:'ConfigFacturaCreate' }" class="dropdown-item">Carga Manual de Movimientos</router-link>
+                                        <div class="dropend">
+                                            <button class="dropdown-item dropdown-toggle" type="buton" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                            Carga Masiva
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <router-link class="dropdown-item" :to="{ name: 'SubirProveedores' }">Proveedores</router-link>
+                                                <router-link class="dropdown-item" :to="{ name: 'SubirFacturas' }">Facturas</router-link>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

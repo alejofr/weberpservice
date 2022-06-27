@@ -63,6 +63,19 @@ export default {
                                     title: 'Selecciona la empresa',
                                     for: 'id_empresa'
                                 }
+                            },//
+                            {
+                                nodo: 'input',
+                                type: 'text',
+                                validate: 'required|max:60',
+                                event: 'change',
+                                name: 'id_ceco_erp',
+                                value: '',
+                                id: 'id_ceco_erp',
+                                label: {
+                                    title: 'Id Ceco',
+                                    for: 'id_ceco_erp'
+                                }
                             },
                             {
                                 nodo: 'input',
@@ -126,8 +139,9 @@ export default {
                     this.card.id = id;
                     this.card.row[0].form[0].value = ceco.id_pais;
                     this.card.row[0].form[1].value = ceco.id_empresa;
-                    this.card.row[0].form[2].value = ceco.largo_ceco;
-                    this.card.row[0].form[3].value = ceco.corto_ceco;
+                    this.card.row[0].form[2].value = ceco.id_ceco_erp;
+                    this.card.row[0].form[3].value = ceco.largo_ceco;
+                    this.card.row[0].form[4].value = ceco.corto_ceco;
                     this.search_empresas(ceco.id_pais);
                     this.componentRender = FormOneComponent;
                 }else{

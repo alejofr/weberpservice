@@ -45,11 +45,24 @@ export default {
                                     title: 'Selecciona un pais',
                                     for: 'id_pais'
                                 }
+                            },//
+                            {
+                                nodo: 'input',
+                                type: 'text',
+                                validate: 'required|max:60',
+                                event: 'change',
+                                name: 'id_empresa_erp',
+                                value: '',
+                                id: 'id_empresa_erp',
+                                label: {
+                                    title: 'Id Empresa',
+                                    for: 'id_empresa_erp'
+                                }
                             },
                             {
                                 nodo: 'input',
                                 type: 'text',
-                                validate: 'required|customAlpha:false|max:60',
+                                validate: 'required|max:60',
                                 event: 'change',
                                 name: 'nombre_empresa',
                                 value: '',
@@ -72,6 +85,19 @@ export default {
                                     for: 'nombre_corto'
                                 }
                             },
+                            {
+                                nodo: 'input',
+                                type: 'text',
+                                validate: '',
+                                event: 'change',
+                                name: 'clave',
+                                value: '',
+                                id: 'clave',
+                                label: {
+                                    title: 'Clave de Empresa',
+                                    for: 'clave'
+                                }
+                            }
                         ]
                     }
                 ]//fin row

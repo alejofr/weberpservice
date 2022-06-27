@@ -11,7 +11,7 @@ const LoaderComponent = () => import('../../../components/LoaderComponent.vue');
 const Error404 = () => import('../../../components/Error404Component.vue')
 export default {
     name: 'MonedasForm',
-
+    //
     data() {
         return {
             componentRender: LoaderComponent,
@@ -43,6 +43,19 @@ export default {
                                 label: {
                                     title: 'Selecciona el pais de la moneda',
                                     for: 'id_pais'
+                                }
+                            },
+                            {
+                                nodo: 'input',
+                                type: 'text',
+                                validate: 'required|max:60',
+                                event: 'change',
+                                name: 'id_moneda_erp',
+                                value: '',
+                                id: 'id_moneda_erp',
+                                label: {
+                                    title: 'Id Moneda',
+                                    for: 'id_moneda_erp'
                                 }
                             },
                             {

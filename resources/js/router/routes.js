@@ -58,6 +58,25 @@ export const routes = [
                         path: 'factura/create',
                         meta: { title: 'Carga Manual de Movimientos' },//
                         component:  () => import(/* webpackChunkName: "ProveedorEditar" */ '../views/operacion/Facturas/FacturasForm.vue')
+                    },//
+                    {
+                        name: 'OpCargaMasiva',
+                        path: 'carga-masiva',
+                        component:  () => import(/* webpackChunkName: "Operacion" */ '../views/operacion/Operacion.vue'),
+                        children: [
+                            {
+                                name: 'SubirProveedores',
+                                path: 'proveedores',
+                                meta: { title: 'Carga Masiva de Proveedores' },
+                                component:  () => import(/* webpackChunkName: "SubirProveedores" */ '../views/operacion/Proveedores/SubirProveedores.vue')
+                            },
+                            {
+                                name: 'SubirFacturas',
+                                path: 'facturas',
+                                meta: { title: 'Carga Masiva de Facturas' },
+                                component:  () => import(/* webpackChunkName: "SubirFacturas" */ '../views/operacion/Facturas/SubirFacturas.vue')
+                            },
+                        ]
                     }
                 ]
             }

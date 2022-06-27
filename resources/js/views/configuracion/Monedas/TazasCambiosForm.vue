@@ -58,6 +58,19 @@ export default {
                                     for: 'monto_tc'
                                 }
                             },
+                            {
+                                nodo: 'input',
+                                type: 'date',
+                                validate: 'required',
+                                event: 'change',
+                                name: 'fecha_tc',
+                                value: '',
+                                id: 'fecha_tc',
+                                label: {
+                                    title: 'Fecha Tasa de Cambio',
+                                    for: 'fecha_tc'
+                                }
+                            },
                         ]
                     }
                 ]//fin row
@@ -94,6 +107,7 @@ export default {
                     
                     this.card.row[0].form[0].disable = true;
                     this.card.row[0].form[1].value = cambio.monto_tc;
+                    this.card.row[0].form[2].value = cambio.fecha_tc;
                     this.init_form(cambio.id_moneda_cambio, data);
                     this.componentRender = FormOneComponent;
                 }else{

@@ -17,12 +17,14 @@ export default {
                     {name: 'Id Empresa'},
                     {name: 'Nombre Empresa'},
                     {name: 'Corto Empresa'},
+                    {name: 'Clave Empresa'},
                     {name: 'Nombre Pais'},
                     {name: 'Corto Divisa'},
                 ],
                 columns: [
                     {name: 'Nombre Empresa', value: 'wse_empresas.nombre_empresa'},
                     {name: 'Corto Empresa', value: 'wse_empresas.nombre_corto'},
+                    {name: 'Clave Empresa', value: 'wse_empresas.clave'},
                     {name: 'Nombre Pais', value: 'wse_paises.nombre'},
                     {name: 'Corto Divisa', value: 'wse_monedas.abreviatura'},
                 ]

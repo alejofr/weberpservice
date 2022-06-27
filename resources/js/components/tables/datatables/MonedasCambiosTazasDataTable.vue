@@ -17,7 +17,7 @@
                 <span class="" ></span>
             </td>
             <td>
-                <span class="" > {{ item.fecha_editado }}</span>
+                <span class="" > {{ item.fecha_tc }}</span>
             </td>
         </tr>
     </tbody>

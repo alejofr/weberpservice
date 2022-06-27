@@ -160,7 +160,7 @@ var LoaderComponent = function LoaderComponent() {
 };
 
 var AlertMessageComponent = function AlertMessageComponent() {
-  return __webpack_require__.e(/*! import() */ "resources_js_components_AlertMessageComponent_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../../../components/AlertMessageComponent.vue */ "./resources/js/components/AlertMessageComponent.vue"));
+  return __webpack_require__.e(/*! import() */ "AlertMessageComponent").then(__webpack_require__.bind(__webpack_require__, /*! ../../../components/AlertMessageComponent.vue */ "./resources/js/components/AlertMessageComponent.vue"));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -420,10 +420,23 @@ var Error404 = function Error404() {
               title: 'Selecciona una Condición',
               "for": 'leyenda_condiciones'
             }
+          }, //
+          {
+            nodo: 'input',
+            type: 'text',
+            validate: 'required|max:60',
+            event: 'change',
+            name: 'id_proveedor_erp',
+            value: '',
+            id: 'id_proveedor_erp',
+            label: {
+              title: 'Id Proveedor',
+              "for": 'id_proveedor_erp'
+            }
           }, {
             nodo: 'input',
             type: 'text',
-            validate: 'required|customAlpha:false|max:60',
+            validate: 'required|max:60',
             event: 'change',
             name: 'nombre_proveedor',
             value: '',

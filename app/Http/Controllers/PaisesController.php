@@ -68,6 +68,7 @@ class PaisesController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id_pais_erp' =>  ['required'],
             'nombre' => ['required', 'unique:wse_paises'],
             'nacionalidad_pais' => ['required', 'unique:wse_paises']
         ]);
@@ -81,7 +82,7 @@ class PaisesController extends Controller
 
         $pais = new Paises;
 
-
+        $pais->id_pais_erp = $request->id_pais_erp;
         $pais->nombre = $request->nombre;
         $pais->nacionalidad_pais = $request->nacionalidad_pais;
 
@@ -99,6 +100,7 @@ class PaisesController extends Controller
         ->where('eliminado', '=', false)
         ->select([
             'id_pais',
+            'id_pais_erp',
             'nombre',
             'nacionalidad_pais',
         ])->first();
@@ -125,6 +127,10 @@ class PaisesController extends Controller
             ]);
         }
 
+        $validator = Validator::make($request->all(), [
+            'id_pais_erp' =>  ['required'],
+        ]);
+
 
         if ( isset($validator) && $validator->fails()) {
             return response()->json([
@@ -134,6 +140,7 @@ class PaisesController extends Controller
         }
 
         $nombre =  $pais->nombre;
+        $pais->id_pais_erp = ( $request->id_pais_erp != $pais->nombre ) ? $request->id_pais_erp : $pais->id_pais_erp;
         $pais->nombre = ( $request->nombre != $pais->nombre ) ? $request->nombre : $pais->nombre;
         $pais->nacionalidad_pais = ( $request->nacionalidad_pais != $pais->nacionalidad_pais ) ? $request->nacionalidad_pais : $pais->nacionalidad_pais;
 

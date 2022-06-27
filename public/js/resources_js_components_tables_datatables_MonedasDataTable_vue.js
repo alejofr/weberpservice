@@ -30,6 +30,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'MonedasTableComponent',
   props: ['data'],
@@ -172,6 +175,8 @@ var render = function () {
         _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.nombre_moneda))])]),
         _vm._v(" "),
         _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.abreviatura))])]),
+        _vm._v(" "),
+        _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.id_moneda_erp))])]),
       ])
     }),
     0

@@ -28,7 +28,7 @@ class MonedasCambiosTazasController extends Controller
             'wse_monedas_cambios.id_moneda_divisa',
             'wse_monedas_cambios_tazas.id_cambio_taza',
             'wse_monedas_cambios_tazas.monto_tc',
-            'wse_monedas_cambios_tazas.fecha_editado'
+            'wse_monedas_cambios_tazas.fecha_tc'
         ];
 
         extract(request()->only(['query', 'limit', 'page', 'orderBy', 'ascending',]));
@@ -138,13 +138,24 @@ class MonedasCambiosTazasController extends Controller
             'id_moneda_cambio',
             'id_cambio_taza',
             'monto_tc',
-            'fecha_editado',
+            'fecha_tc',
         ])->first();
+
+        $validator = Validator::make($request->all(), [
+            'fecha_tc' => ['required'],
+            'monto_tc' => ['required']
+        ]);
+
+        if ( isset($validator) && $validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
         
-        $fecha_actual = Carbon::now()->format('Y-m-d');
         $consul = MonedasCambiosTazas::where('id_moneda_cambio', '=', $taza_before->id_moneda_cambio)
         ->where('eliminado', '=', false)
-        ->whereDate('fecha_editado', $fecha_actual)->count();
+        ->whereDate('fecha_tc', $request->fecha_tc)->count();
 
         if( $consul > 0 ){
             return response()->json([
@@ -154,10 +165,13 @@ class MonedasCambiosTazasController extends Controller
         }
 
        
+
+       
         $taza = new MonedasCambiosTazas();
 
         $taza->id_moneda_cambio = $taza_before->id_moneda_cambio;
         $taza->monto_tc = $request->monto_tc;
+        $taza->fecha_tc = $request->fecha_tc;
 
         $taza->save();
 

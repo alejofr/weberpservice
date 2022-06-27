@@ -57,6 +57,18 @@ var Error404 = function Error404() {
           form: [{
             nodo: 'input',
             type: 'text',
+            validate: 'required|max:60',
+            event: 'change',
+            name: 'id_pais_erp',
+            value: '',
+            id: 'id_pais_erp',
+            label: {
+              title: 'Id Pais',
+              "for": 'id_pais_erp'
+            }
+          }, {
+            nodo: 'input',
+            type: 'text',
             validate: 'required|customAlpha:false|max:60',
             event: 'change',
             name: 'nombre',

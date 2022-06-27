@@ -19,7 +19,9 @@ Route::post('tazas-cambios', 'App\Http\Controllers\MonedasCambiosTazasController
 Route::post('empresas', 'App\Http\Controllers\EmpresasConstroller@store');
 Route::post('cecos', 'App\Http\Controllers\CecosController@store');
 Route::post('proveedores', 'App\Http\Controllers\ProveedoresController@store');
+Route::post('proveedores/load', 'App\Http\Controllers\ProveedoresController@load');
 Route::post('facturas', 'App\Http\Controllers\FacturasController@store');
+Route::post('facturas/load', 'App\Http\Controllers\FacturasController@load');
 
 
 /**

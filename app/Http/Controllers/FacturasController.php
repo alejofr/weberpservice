@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cecos;
 use App\Models\Facturas;
+use App\Models\Monedas;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +65,6 @@ class FacturasController extends Controller
         }
 
         $results = $records->get()->toArray();
-
         return response()->json([
             'status' => 200,
             'results' => $results,
@@ -130,5 +130,82 @@ class FacturasController extends Controller
             'message' => 'La factura con el ID '. $factura->id_factura_erp.' fue agregada con éxito'
         ], 200);
 
+    }
+
+    public function load(Request $request)
+    {
+        $facturas = $request->load;
+        //$proveedores = json_decode($proveedores);
+
+        if( count($facturas)  == 0 ){
+            return response()->json([
+                'status' => 422,
+                'message' => 'Error, El archivo Excel no debe de estar vacios.'
+            ], 422);
+        }
+
+        for ($i=0; $i <count($facturas) ; $i++) {
+            $validator = Validator::make($facturas[$i], [
+                'id_factura' => ['required', 'max:40', 'unique:wse_facturas'],
+                'id_proveedor' => ['required'],
+                'id_moneda' => ['required'],
+                'id_ceco' => ['required'],
+                'fecha_factura' => ['required', 'date', 'date_format:Y-m-d'],
+                'fecha_vencimiento_factura' => ['required', 'date', 'date_format:Y-m-d'],
+                'monto_factura' => ['required'],
+                'descripcion_factura' => ['required'],
+            ]);
+
+            if ( isset($validator) && $validator->fails()) {
+                $facturas[$i]['status'] = 422;
+                $facturas[$i]['message'] = $validator->errors()->first();
+            }else{
+                $bol = false;
+                $count_proveedor = Proveedores::where('eliminado', '=', false)->where('id_proveedor_erp', '=',  $facturas[$i]['id_proveedor'])->count();
+
+                $count_moneda = Monedas::where('eliminado', '=', false)->where('id_moneda_erp', '=',  $facturas[$i]['id_moneda'])->count();
+
+                $count_ceco = Cecos::where('eliminado', '=', false)->where('id_ceco_erp', '=',  $facturas[$i]['id_ceco'])->count();
+
+                if( $count_proveedor == 0 ){
+                    $facturas[$i]['message'] = 'El proveedor no existe con el ID: '.$facturas[$i]['id_proveedor'];
+                }elseif( $count_moneda == 0 ){
+                    $facturas[$i]['message'] = 'La moneda no existe con el ID: '.$facturas[$i]['id_moneda'];
+                }elseif( $count_ceco == 0 ){
+                    $facturas[$i]['message'] = 'El ceco no existe con el ID: '.$facturas[$i]['id_ceco'];
+                }else{
+                    $bol = true;
+                }
+
+                if(!$bol){
+                    $facturas[$i]['status'] = 422;
+                }else{
+                    $proveedor = Proveedores::where('eliminado', '=', false)->where('id_proveedor_erp', '=',  $facturas[$i]['id_proveedor'])->first();
+
+                    $moneda = Monedas::where('eliminado', '=', false)->where('id_moneda_erp', '=',  $facturas[$i]['id_moneda'])->first();
+
+                    $ceco = Cecos::where('eliminado', '=', false)->where('id_ceco_erp', '=',  $facturas[$i]['id_ceco'])->first();
+
+                    Facturas::create([
+                        'id_proveedor' => $proveedor->id_proveedor,
+                        'id_ceco' => $ceco->id_ceco,
+                        'id_moneda' => $moneda->id_moneda,
+                        'id_factura_erp' => $facturas[$i]['id_factura'],
+                        'fecha_factura' => $facturas[$i]['fecha_factura'],
+                        'fecha_vencimiento' => $facturas[$i]['fecha_vencimiento_factura'],
+                        'monto_factura' => $facturas[$i]['monto_factura'],
+                        'descripcion_factura'  => $facturas[$i]['descripcion_factura'],
+                    ]);
+
+                    $facturas[$i]['status'] = 200;
+                    $facturas[$i]['message'] = 'La Factura Fue Agregada';
+                }
+            }
+        }//fin for
+
+        return response()->json([
+            'status' => 200,
+            'results' => $facturas
+        ], 200);
     }
 }

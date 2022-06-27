@@ -36,6 +36,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'EmpresasDataTable',
   props: ['data'],
@@ -178,6 +181,8 @@ var render = function () {
         _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.nombre_empresa))])]),
         _vm._v(" "),
         _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.nombre_corto))])]),
+        _vm._v(" "),
+        _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.clave))])]),
         _vm._v(" "),
         _c("td", [_c("span", {}, [_vm._v(" " + _vm._s(item.nombre_pais))])]),
         _vm._v(" "),

@@ -98,6 +98,7 @@ class CecosController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id_ceco_erp' => ['required'],
             'id_empresa' => ['required'],
             'largo_ceco' => ['required', 'max:60', 'unique:wse_cecos'],
             'corto_ceco' => ['required', 'max:30', 'unique:wse_cecos'],
@@ -113,6 +114,7 @@ class CecosController extends Controller
         $ceco = New Cecos;
 
         $ceco->id_empresa = $request->id_empresa;
+        $ceco->id_ceco_erp= $request->id_ceco_erp;
         $ceco->largo_ceco = $request->largo_ceco;
         $ceco->corto_ceco =  $request->corto_ceco;
 
@@ -129,6 +131,7 @@ class CecosController extends Controller
         $select = [
             'wse_paises.id_pais',
             'wse_cecos.id_empresa',
+            'wse_cecos.id_ceco_erp',
             'wse_cecos.id_ceco',
             'wse_cecos.id_ceco_erp',
             'wse_cecos.largo_ceco',
@@ -154,7 +157,8 @@ class CecosController extends Controller
         $ceco = Cecos::find($id);
 
         $validator = Validator::make($request->all(), [
-            'id_empresa' => ['required']
+            'id_empresa' => ['required'],
+            'id_ceco_erp' => ['required']
         ]);
 
         if( $ceco->largo_ceco != $request->largo_ceco ){
@@ -180,6 +184,7 @@ class CecosController extends Controller
       
         $largo =  $ceco->largo_ceco;
         $ceco->id_empresa = $request->id_empresa;
+        $ceco->id_ceco_erp= $request->id_ceco_erp;
         $ceco->largo_ceco = $request->largo_ceco;
         $ceco->corto_ceco =  $request->corto_ceco;
 

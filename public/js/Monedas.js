@@ -30,6 +30,8 @@ __webpack_require__.r(__webpack_exports__);
           name: 'Monedas'
         }, {
           name: 'Abreviatura Moneda'
+        }, {
+          name: 'Id Moneda'
         }],
         columns: [{
           name: 'Nombre Pais',
@@ -40,6 +42,9 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'Abreviatura Moneda',
           value: 'wse_monedas.abreviatura'
+        }, {
+          name: 'Id Moneda',
+          value: 'wse_monedas.id_moneda_erp'
         }]
       },
       view: 'MonedasDataTable',

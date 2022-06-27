@@ -16,12 +16,14 @@ export default {
                 th: [
                     {name: 'Nombre Pais'},
                     {name: 'Monedas'},
-                    {name: 'Abreviatura Moneda'}
+                    {name: 'Abreviatura Moneda'},
+                    {name: 'Id Moneda'}
                 ],
                 columns: [
                     {name: 'Nombre Pais', value: 'wse_paises.nombre'},
                     {name: 'Monedas', value: 'wse_monedas.nombre'},
-                    {name: 'Abreviatura Moneda', value: 'wse_monedas.abreviatura'}
+                    {name: 'Abreviatura Moneda', value: 'wse_monedas.abreviatura'},
+                    {name: 'Id Moneda', value: 'wse_monedas.id_moneda_erp'}
                 ]
             },
             view: 'MonedasDataTable',
