@@ -14,7 +14,8 @@ Vue.use(VueAxios, axios);
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.MIX_APP_API_URL;
 Vue.use(VueRouter);
-
+import vTitle from 'vuejs-title'
+Vue.use(vTitle)
 
 Vue.use(VeeValidate, {
     classes: true,

@@ -14,14 +14,23 @@ export default {
         return {
             data: {
                 th: [
+                    {name: 'Detalles'},
+                    {name: 'Status'},
+                    {name: 'Remesa'},
+                    {name: 'Ceco'},
                     {name: 'Proveedor'},
-                    {name: 'Corto Ceco'},
-                    {name: 'Moneda'},
-                    {name: 'Id Factura'},
+                    {name: 'Nombre Proveedor'},
+                    {name: 'No. de Factura'},
                     {name: 'Fecha Factura'},
                     {name: 'Fecha Vencimiento'},
-                    {name: 'Monto Factura'},
-                    {name: 'Descripcion Factura'}
+                    {name: 'Total Factura'},
+                    {name: 'Por Pagar'},
+                    {name: 'Divisa'},
+                    {name: 'T.C'},
+                    {name: 'Total M.N'},
+                    {name: 'Descripcion Factura'},
+                    {name: 'Contrato'},
+                    {name: 'Bolsa'}
                 ],
                 columns: [
                     {name: 'Proveedor', value: 'wse_op_proveedores.nit_proveedor'},

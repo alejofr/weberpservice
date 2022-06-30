@@ -44,6 +44,7 @@ class Facturas extends Model
         'monto_factura',
         'descripcion_factura',
         'eliminado',
+        'status',
         'fecha_creado', 
         'fecha_editado',
         'fecha_eliminado' 

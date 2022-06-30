@@ -22,13 +22,23 @@ class FacturasController extends Controller
             'wse_facturas.fecha_vencimiento',
             'wse_facturas.monto_factura',
             'wse_facturas.descripcion_factura',
+            'wse_facturas.status',
             'wse_op_proveedores.id_proveedor',
+            'wse_op_proveedores.id_proveedor_erp',
             'wse_op_proveedores.nombre_proveedor',
-            'wse_op_proveedores.nit_proveedor',
+            //'wse_op_proveedores.nit_proveedor',
             'wse_monedas.id_moneda',
-            'wse_monedas.nombre',
+            'wse_monedas.abreviatura',
             'wse_cecos.id_ceco',
-            'wse_cecos.corto_ceco', 
+            'wse_cecos.corto_ceco',
+            'wse_cecos.id_empresa',
+            'wse_empresas.id_empresa',
+            'wse_empresas.id_pais',
+            'wse_empresas.clave',
+            'wse_paises.id_pais',
+            'monedas.id_pais',
+            'monedas.id_moneda as id_moneda_pais',
+            'monedas.abreviatura as abreviatura_pais', 
         ];
 
         extract(request()->only(['query', 'limit', 'page', 'orderBy', 'ascending',]));
@@ -43,6 +53,9 @@ class FacturasController extends Controller
         ->leftJoin('wse_op_proveedores', 'wse_op_proveedores.id_proveedor', '=', 'wse_facturas.id_proveedor')
         ->leftJoin('wse_monedas', 'wse_monedas.id_moneda', '=', 'wse_facturas.id_moneda')
         ->leftJoin('wse_cecos', 'wse_cecos.id_ceco', '=', 'wse_facturas.id_ceco')
+        ->leftJoin('wse_empresas', 'wse_empresas.id_empresa', '=', 'wse_cecos.id_empresa')
+        ->leftJoin('wse_paises', 'wse_paises.id_pais', '=', 'wse_empresas.id_pais')
+        ->leftJoin('wse_monedas as monedas', 'monedas.id_pais', '=', 'wse_paises.id_pais')
         ->where('wse_facturas.eliminado', '=', false)
         ->Where(function($query) {
             $query->orWhere('wse_facturas.monto_factura',  'LIKE', '%'.$this->search.'%')
@@ -65,9 +78,56 @@ class FacturasController extends Controller
         }
 
         $results = $records->get()->toArray();
+
+        $arreglo = [];
+
+        for ($i=0; $i < count($results) ; $i++) { 
+            $tc = 0;
+            $total_mn = 0;
+
+            if( $results[$i]->id_moneda != $results[$i]->id_moneda_pais ){
+               $tasa_cambio =  DB::table('wse_monedas_cambios')
+                ->leftJoin('wse_monedas_cambios_tazas', 'wse_monedas_cambios_tazas.id_moneda_cambio', '=', 'wse_monedas_cambios.id_moneda_cambio')
+                ->where('wse_monedas_cambios.id_moneda_nc', '=', $results[$i]->id_moneda_pais)
+                ->where('wse_monedas_cambios.id_moneda_divisa', '=', $results[$i]->id_moneda)
+                ->where('wse_monedas_cambios_tazas.fecha_tc', '=', $results[$i]->fecha_factura)
+                ->orderBy('wse_monedas_cambios_tazas.fecha_tc', 'DESC')
+                ->select(['wse_monedas_cambios_tazas.monto_tc', 'wse_monedas_cambios_tazas.fecha_tc'])
+                ->first();
+
+                if( $tasa_cambio != null ){
+                    $tc = $tasa_cambio->monto_tc;
+                    $total_mn = $tc * $results[$i]->monto_factura;
+                }
+            }
+
+            $aux = [
+                'id_factura' => $results[$i]->id_factura,
+                'status' =>  $results[$i]->status,
+                'remesa' =>  '',
+                'ceco' =>  $results[$i]->clave.'-'.$results[$i]->corto_ceco,
+                'proveedor' =>  $results[$i]->id_proveedor_erp,
+                'nombre_proveedor' =>  $results[$i]->nombre_proveedor,
+                'no_factura' =>  $results[$i]->id_factura_erp,
+                'fecha_factura' => $results[$i]->fecha_factura, 
+                'fecha_vencimiento' => $results[$i]->fecha_vencimiento, 
+                'total_factura' => $results[$i]->monto_factura, 
+                'por_pagar' =>  $results[$i]->monto_factura,
+                'divisa' => $results[$i]->abreviatura, 
+                'tc' => $tc, 
+                'total_mn' => $total_mn, 
+                'descripcion_factura' => $results[$i]->descripcion_factura, 
+                'contrato' => '', 
+                'bolsa' => ''
+            ];
+            
+            array_push($arreglo, $aux);
+        }
+
+        
         return response()->json([
             'status' => 200,
-            'results' => $results,
+            'results' => $arreglo,
             'pagination' => [
                 'numPage' => intval($page),
                 'resultPage' => count($results),
@@ -146,7 +206,7 @@ class FacturasController extends Controller
 
         for ($i=0; $i <count($facturas) ; $i++) {
             $validator = Validator::make($facturas[$i], [
-                'id_factura' => ['required', 'max:40', 'unique:wse_facturas'],
+                'id_factura' => ['required', 'max:40'],
                 'id_proveedor' => ['required'],
                 'id_moneda' => ['required'],
                 'id_ceco' => ['required'],
@@ -161,45 +221,53 @@ class FacturasController extends Controller
                 $facturas[$i]['message'] = $validator->errors()->first();
             }else{
                 $bol = false;
-                $count_proveedor = Proveedores::where('eliminado', '=', false)->where('id_proveedor_erp', '=',  $facturas[$i]['id_proveedor'])->count();
+                $count_factura = Facturas::where('eliminado', '=', false)->where('id_factura_erp', '=', $facturas[$i]['id_factura'])->count();
 
-                $count_moneda = Monedas::where('eliminado', '=', false)->where('id_moneda_erp', '=',  $facturas[$i]['id_moneda'])->count();
+                if( $count_factura == 0 ){
+                    $count_proveedor = Proveedores::where('eliminado', '=', false)->where('id_proveedor_erp', '=',  $facturas[$i]['id_proveedor'])->count();
 
-                $count_ceco = Cecos::where('eliminado', '=', false)->where('id_ceco_erp', '=',  $facturas[$i]['id_ceco'])->count();
-
-                if( $count_proveedor == 0 ){
-                    $facturas[$i]['message'] = 'El proveedor no existe con el ID: '.$facturas[$i]['id_proveedor'];
-                }elseif( $count_moneda == 0 ){
-                    $facturas[$i]['message'] = 'La moneda no existe con el ID: '.$facturas[$i]['id_moneda'];
-                }elseif( $count_ceco == 0 ){
-                    $facturas[$i]['message'] = 'El ceco no existe con el ID: '.$facturas[$i]['id_ceco'];
+                    $count_moneda = Monedas::where('eliminado', '=', false)->where('id_moneda_erp', '=',  $facturas[$i]['id_moneda'])->count();
+    
+                    $count_ceco = Cecos::where('eliminado', '=', false)->where('id_ceco_erp', '=',  $facturas[$i]['id_ceco'])->count();
+    
+                    if( $count_proveedor == 0 ){
+                        $facturas[$i]['message'] = 'El proveedor no existe con el ID: '.$facturas[$i]['id_proveedor'];
+                    }elseif( $count_moneda == 0 ){
+                        $facturas[$i]['message'] = 'La moneda no existe con el ID: '.$facturas[$i]['id_moneda'];
+                    }elseif( $count_ceco == 0 ){
+                        $facturas[$i]['message'] = 'El ceco no existe con el ID: '.$facturas[$i]['id_ceco'];
+                    }else{
+                        $bol = true;
+                    }
+    
+                    if(!$bol){
+                        $facturas[$i]['status'] = 422;
+                    }else{
+                        $proveedor = Proveedores::where('eliminado', '=', false)->where('id_proveedor_erp', '=',  $facturas[$i]['id_proveedor'])->first();
+    
+                        $moneda = Monedas::where('eliminado', '=', false)->where('id_moneda_erp', '=',  $facturas[$i]['id_moneda'])->first();
+    
+                        $ceco = Cecos::where('eliminado', '=', false)->where('id_ceco_erp', '=',  $facturas[$i]['id_ceco'])->first();
+    
+                        Facturas::create([
+                            'id_proveedor' => $proveedor->id_proveedor,
+                            'id_ceco' => $ceco->id_ceco,
+                            'id_moneda' => $moneda->id_moneda,
+                            'id_factura_erp' => $facturas[$i]['id_factura'],
+                            'fecha_factura' => $facturas[$i]['fecha_factura'],
+                            'fecha_vencimiento' => $facturas[$i]['fecha_vencimiento_factura'],
+                            'monto_factura' => $facturas[$i]['monto_factura'],
+                            'descripcion_factura'  => $facturas[$i]['descripcion_factura'],
+                        ]);
+    
+                        $facturas[$i]['status'] = 200;
+                        $facturas[$i]['message'] = 'La Factura Fue Agregada';
+                    }
                 }else{
-                    $bol = true;
-                }
-
-                if(!$bol){
                     $facturas[$i]['status'] = 422;
-                }else{
-                    $proveedor = Proveedores::where('eliminado', '=', false)->where('id_proveedor_erp', '=',  $facturas[$i]['id_proveedor'])->first();
-
-                    $moneda = Monedas::where('eliminado', '=', false)->where('id_moneda_erp', '=',  $facturas[$i]['id_moneda'])->first();
-
-                    $ceco = Cecos::where('eliminado', '=', false)->where('id_ceco_erp', '=',  $facturas[$i]['id_ceco'])->first();
-
-                    Facturas::create([
-                        'id_proveedor' => $proveedor->id_proveedor,
-                        'id_ceco' => $ceco->id_ceco,
-                        'id_moneda' => $moneda->id_moneda,
-                        'id_factura_erp' => $facturas[$i]['id_factura'],
-                        'fecha_factura' => $facturas[$i]['fecha_factura'],
-                        'fecha_vencimiento' => $facturas[$i]['fecha_vencimiento_factura'],
-                        'monto_factura' => $facturas[$i]['monto_factura'],
-                        'descripcion_factura'  => $facturas[$i]['descripcion_factura'],
-                    ]);
-
-                    $facturas[$i]['status'] = 200;
-                    $facturas[$i]['message'] = 'La Factura Fue Agregada';
+                    $facturas[$i]['message'] = 'El valor Id factura ya se encuentra en uso.';
                 }
+               
             }
         }//fin for
 

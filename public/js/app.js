@@ -2217,6 +2217,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router_routes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./router/routes */ "./resources/js/router/routes.js");
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var vuejs_title__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuejs-title */ "./node_modules/vuejs-title/dist/vuejs-title.esm.js");
+/* harmony import */ var vuejs_title__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vuejs_title__WEBPACK_IMPORTED_MODULE_9__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -2237,6 +2239,8 @@ Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_1__["default"], (axios__WEBPACK_IMPOR
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.withCredentials) = true;
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = "http://127.0.0.1:8000/api/";
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_8__["default"]);
+
+Vue.use((vuejs_title__WEBPACK_IMPORTED_MODULE_9___default()));
 Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_2__["default"], {
   classes: true,
   classNames: {
@@ -30060,6 +30064,308 @@ function getOuterHTML (el) {
 Vue.compile = compileToFunctions;
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Vue);
+
+
+/***/ }),
+
+/***/ "./node_modules/vuejs-title/dist/vuejs-title.esm.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/vuejs-title/dist/vuejs-title.esm.js ***!
+  \**********************************************************/
+/***/ ((module) => {
+
+/**
+ * VueTitle
+ */
+var VueTitle = {
+    install: function (Vue, options) {
+        Vue.mixin({
+            mounted: function () {
+                if (typeof options === "object" && typeof options.mounted === "function") {
+                    return options.mounted();
+                }
+            }
+        });
+
+        // To ensure browser compatibility
+        if (!HTMLElement.prototype.hasOwnProperty('offset')) {
+            HTMLElement.prototype.offset = function () {
+                var rect = this.getBoundingClientRect(),
+                    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+                    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                return {
+                    top: rect.top + scrollTop,
+                    left: rect.left + scrollLeft
+                };
+            };
+        }
+
+        // Variable configurations
+        var conf = {
+                cssClass: "v-title",
+                minPositionGap: 20,
+                padding: "5px 10px",
+                maxWidth: "250px",
+                maxHeight: "50px",
+                round: "4px",
+                bgColor: "rgba(0,0,0,0.7)",
+                textColor: "#FFF",
+                fontSize: "14px",
+                transitionDuration: 300,
+                transitionDelay: 200,
+            },
+            timeout;
+
+        var document = window.document,
+            body = document.body,
+            head = document.head,
+            style = document.createElement("style"),
+            // Ids of constants
+            i = {
+                title: "title",
+                zIndex: 2147483647,
+                px: "px",
+                position: "position",
+                block: "-block",
+                fixed: "-fixed",
+                upper: "-upper",
+                contents: "-contents",
+                arrow: "-arrow",
+                show: "-show",
+                mouseover: "mouseover",
+                mouseout: "mouseout",
+                click: "click",
+                scroll: "scroll",
+                arrowBorder: "8px solid",
+                arrowMargin: "-0.32px",
+                transparent: "transparent",
+                supportsTouch: 'ontouchstart' in document.documentElement,
+                opacity: "opacity"
+            },
+            fn = {
+                createDiv: function createDiv() {
+                    return document.createElement("div");
+                },
+                nodeExists: function nodeExists(node) {
+                    return node instanceof Element;
+                },
+                // The title bubble element
+                bubble: function bubble() {
+                    return body.querySelector("." + conf.cssClass);
+                },
+                // Create the title bubble element
+                add: function add(el, value) {
+                    clearTimeout(timeout);
+                    var bubble = fn.bubble();
+
+                    if (fn.nodeExists(bubble)) {
+                        if (el !== bubble.vTitleOrigin) {
+                            fn.toggle(el, value, bubble);
+                        }
+                        return;
+                    }
+
+                    bubble = fn.createDiv();
+                    var contents = fn.createDiv(),
+                        arrow = fn.createDiv();
+
+                    bubble.classList.add(
+                        conf.cssClass,
+                        conf.cssClass + i.block,
+                        conf.cssClass + i.fixed,
+                        conf.cssClass + i.upper
+                    );
+                    bubble.setAttribute(i.position, "bottom");
+                    contents.classList.add(
+                        conf.cssClass + i.contents,
+                        conf.cssClass + i.block
+                    );
+                    arrow.classList.add(
+                        conf.cssClass + i.arrow,
+                        conf.cssClass + i.block,
+                        conf.cssClass + i.fixed,
+                        conf.cssClass + i.upper
+                    );
+                    contents.innerHTML = value;
+
+                    bubble.appendChild(contents);
+                    bubble.appendChild(arrow);
+                    body.appendChild(bubble);
+
+                    fn.setPosition(el, bubble, arrow);
+                    fn.setOriginData(el, bubble);
+                },
+                // Update the value of the title bubble element
+                toggle: function toggle(el, value, bubble) {
+                    var contents = bubble.querySelector("." + conf.cssClass + i.contents),
+                        arrow = bubble.querySelector("." + conf.cssClass + i.arrow);
+
+                    if (fn.nodeExists(contents) && fn.nodeExists(arrow)) {
+                        contents.innerHTML = value;
+
+                        fn.setPosition(el, bubble, arrow, true);
+                        fn.setOriginData(el, bubble);
+                    }
+                },
+                // Remove the title bubble element
+                destroy: function destroy(e, target, bubble) {
+                    var mouseout = e && e.type === i.mouseout,
+                        origin = bubble.vTitleOrigin;
+
+                    if (!fn.nodeExists(bubble) || (mouseout && target !== origin)) {
+                        return;
+                    }
+
+                    bubble.parentNode ? bubble.parentNode.removeChild(bubble) : bubble.remove();
+                },
+                // On mouseout
+                blur: function blur(e) {
+                    var this$1 = this;
+
+                    var bubble = fn.bubble();
+
+                    if (!fn.nodeExists(bubble)) {
+                        return;
+                    }
+
+                    timeout = setTimeout(function () {
+                        fn.destroy(e, this$1, bubble);
+                    }, conf.transition + conf.transitionDelay);
+                },
+                // On mouseover
+                focus: function focus(el, binding) {
+                    binding.value = fn.getTitle(el, binding.value);
+
+                    if (binding.value) {
+                        fn.add(el, binding.value);
+                    }
+                },
+                // Set the bubble's and arrow's positions
+                setPosition: function setPosition(el, bubble, arrow, toggle) {
+                    if ( toggle === void 0 ) toggle = false;
+
+                    var elOffset = el.offset(),
+                        top = elOffset.top,
+                        left = elOffset.left,
+                        width = el.offsetWidth,
+                        height = el.offsetHeight,
+                        winWidth = window.innerWidth,
+                        winHeight = window.innerHeight,
+                        docScrollTop = document.documentElement.scrollTop,
+                        docScrollLeft = document.documentElement.scrollLeft,
+                        arrowWidth = arrow.offsetWidth,
+                        arrowHeight = arrow.offsetHeight,
+                        bubbleWidth = bubble.offsetWidth,
+                        bubbleHeight = bubble.offsetHeight,
+                        bubbleLeft = left - docScrollLeft - ((bubbleWidth - width) / 2);
+
+                    if (bubbleLeft < conf.minPositionGap) {
+                        bubbleLeft = conf.minPositionGap;
+                    }
+
+                    if (bubbleLeft + bubbleWidth > winWidth) {
+                        bubbleLeft = winWidth - bubbleWidth - conf.minPositionGap;
+                    }
+
+                    bubble.style.left = bubbleLeft + i.px;
+                    arrow.style.left = (left - docScrollLeft + (width / 2) - (arrowWidth / 2)) + i.px;
+                    bubble.style.top = top - docScrollTop + height + arrowHeight + i.px;
+                    arrow.style.top = top - docScrollTop + height + i.px;
+
+                    if (bubble.offset().top + bubbleHeight > docScrollTop + winHeight) {
+                        bubble.setAttribute(i.position, "top");
+                        bubble.style.top = (top - docScrollTop - bubbleHeight - arrowHeight) + i.px;
+                        arrow.style.top = (bubble.offset().top - docScrollTop + bubbleHeight + 3) + i.px;
+                    }
+
+                    if (!toggle) {
+                        setTimeout(function () {
+                            bubble.classList.add(conf.cssClass + i.show);
+                        }, 0);
+                    }
+                },
+                // Origin data is held to control events
+                setOriginData: function setOriginData(el, bubble) {
+                    bubble.vTitleOrigin = el;
+                },
+                getTitle: function getTitle(el, value) {
+                    if (el.hasAttribute(i.title)) {
+                        if (!value || value !== el.getAttribute(i.title)) {
+                            value = el.getAttribute(i.title);
+                        }
+
+                        el.removeAttribute(i.title);
+                    }
+
+                    return value;
+                },
+                addEvents: function addEvents(el, binding) {
+                    el.addEventListener(i.mouseover, function () {
+                        fn.focus(el, binding);
+                    });
+
+                    el.addEventListener(i.mouseout, fn.blur);
+                    window.addEventListener(i.click, fn.blur);
+                    window.addEventListener(i.scroll, fn.blur);
+                },
+                removeEvents: function removeEvents(el) {
+                    el.removeEventListener(i.mouseover, fn.focus);
+                    el.removeEventListener(i.mouseout, fn.blur);
+                    window.removeEventListener(i.click, fn.blur);
+                    window.removeEventListener(i.scroll, fn.blur);
+                },
+                // Convert milliseconds to seconds
+                convertMS2Second: function convertMS2Second(number) {
+                    return number / 1000;
+                },
+                // Title bubble styles
+                initStyles: function initStyles() {
+                    var classSlc = "." + conf.cssClass,
+                        classSlcParent = classSlc + " " + classSlc;
+
+                    style.setAttribute('type', "text/css");
+                    style.innerHTML = classSlc + i.block + "{display:block}"
+                        + classSlc + i.fixed + "{position:fixed}"
+                        + classSlc + i.upper + "{z-index:" + i.zIndex + "}"
+                        + classSlc + classSlc + i.show + "{" + i.opacity + ":1}"
+                        + classSlc + "{background:" + conf.bgColor + ";border-radius:" + conf.round + ";" + i.opacity + ":0;transition:" + i.opacity + " " + fn.convertMS2Second(conf.transitionDuration) + "s " + fn.convertMS2Second(conf.transitionDelay) + "s;}"
+                        + classSlcParent + i.contents + "{padding:" + conf.padding + ";max-width:" + conf.maxWidth + ";max-height:" + conf.maxHeight + ";color:" + conf.textColor + ";font-size:" + conf.fontSize + ";overflow:hidden;word-break:break-all;}"
+                        + classSlcParent + i.arrow + "{width:0;height:0;border-left:" + i.arrowBorder + " " + i.transparent + ";border-right:" + i.arrowBorder + " " + i.transparent + "}"
+                        + classSlc + "[position=bottom] " + classSlc + i.arrow + "{border-bottom:" + i.arrowBorder + " " + conf.bgColor + ";margin-bottom:" + i.arrowMargin + "}"
+                        + classSlc + "[position=top] " + classSlc + i.arrow + "{border-top:" + i.arrowBorder + " " + conf.bgColor + ";margin-top:" + i.arrowMargin + ";margin-bottom:0}";
+
+                    head.appendChild(style);
+                },
+            };
+
+        // Update configurations
+        if (typeof options === "object") {
+            for (var k in conf) {
+                if (options.hasOwnProperty(k)) {
+                    conf[k] = options[k];
+                }
+            }
+        }
+
+        Vue.directive(i.title, {
+            bind: function (el, binding) {
+                if (!i.supportsTouch) {
+                    fn.addEvents(el, binding);
+                }
+            },
+            unbind: function (el, binding) {
+                fn.blur();
+                fn.removeEvents(el);
+            },
+            inserted: function () {
+                if (!i.supportsTouch) {
+                    fn.initStyles();
+                }
+            }
+        });
+    }
+};
+module.exports = VueTitle;
 
 
 /***/ }),

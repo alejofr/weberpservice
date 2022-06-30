@@ -25,21 +25,39 @@ __webpack_require__.r(__webpack_exports__);
     return {
       data: {
         th: [{
+          name: 'Detalles'
+        }, {
+          name: 'Status'
+        }, {
+          name: 'Remesa'
+        }, {
+          name: 'Ceco'
+        }, {
           name: 'Proveedor'
         }, {
-          name: 'Corto Ceco'
+          name: 'Nombre Proveedor'
         }, {
-          name: 'Moneda'
-        }, {
-          name: 'Id Factura'
+          name: 'No. de Factura'
         }, {
           name: 'Fecha Factura'
         }, {
           name: 'Fecha Vencimiento'
         }, {
-          name: 'Monto Factura'
+          name: 'Total Factura'
+        }, {
+          name: 'Por Pagar'
+        }, {
+          name: 'Divisa'
+        }, {
+          name: 'T.C'
+        }, {
+          name: 'Total M.N'
         }, {
           name: 'Descripcion Factura'
+        }, {
+          name: 'Contrato'
+        }, {
+          name: 'Bolsa'
         }],
         columns: [{
           name: 'Proveedor',

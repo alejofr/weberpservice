@@ -27,6 +27,7 @@ return new class extends Migration
             $table->date('fecha_vencimiento')->nullable();
             $table->string('monto_factura', 80);
             $table->text('descripcion_factura')->nullable();
+            $table->char('status')->default('BORRADOR');
 
             $table->boolean('eliminado')->default(false);
             $table->dateTime('fecha_creado');

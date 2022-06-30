@@ -32,6 +32,7 @@
         "vue-axios": "^3.4.1",
         "vue-router": "^3.5.4",
         "vue-xlsx": "^0.2.1",
+        "vuejs-title": "^1.0.16",
         "vuex": "^3.6.2",
         "xlsx": "^0.14.1"
     }
