@@ -18,7 +18,7 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
 
-            $table->uuid('id_usuario')->primary();
+            $table->uuid('usuario_id')->primary();
             $table->string('nombre_usuario', 20);
             $table->string('nombre_completo', 80)->nullable();
             $table->string('email')->unique();

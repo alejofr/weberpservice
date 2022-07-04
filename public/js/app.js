@@ -2190,7 +2190,7 @@ var HeaderComponent = function HeaderComponent() {
   name: 'WeberpserviceApp',
   computed: {
     headerIs: function headerIs() {
-      return HeaderComponent;
+      return this.$store.getters['auth/getUserStatus'] ? HeaderComponent : '';
     }
   },
   methods: {}
@@ -2238,6 +2238,24 @@ window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js
 Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_1__["default"], (axios__WEBPACK_IMPORTED_MODULE_0___default()));
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.withCredentials) = true;
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = "http://127.0.0.1:8000/api/";
+
+if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserLogged"]) {
+  if (!_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserStatus"]) {
+    _store__WEBPACK_IMPORTED_MODULE_7__["default"].dispatch('auth/update_status', true);
+  }
+
+  axios__WEBPACK_IMPORTED_MODULE_0___default().interceptors.request.use(function (config) {
+    if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserStatus"]) {
+      var headers = {
+        'Authorization': "Bearer " + _store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getToken"]
+      };
+      config['headers'] = headers;
+    }
+
+    return config;
+  });
+}
+
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_8__["default"]);
 
 Vue.use((vuejs_title__WEBPACK_IMPORTED_MODULE_9___default()));
@@ -2272,25 +2290,35 @@ router.beforeEach(function (to, from, next) {
 
   var requestStoreTable = _objectSpread({}, _store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["tableadmin/getRequest"]);
 
-  if (requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0 && Object.keys(to.query).length != 0) {
-    var query = to.query;
-    console.log(query);
-    console.log("paso por aqui");
+  if (to.meta.requireAuth) {
+    if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserStatus"]) {
+      if (requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0 && Object.keys(to.query).length != 0) {
+        var query = to.query;
+        console.log(query);
+        console.log("paso por aqui");
 
-    if (query.hasOwnProperty('page')) {
-      requestStoreTable.params.page = parseInt(query.page);
-      delete query.page;
+        if (query.hasOwnProperty('page')) {
+          requestStoreTable.params.page = parseInt(query.page);
+          delete query.page;
+        } else {
+          requestStoreTable.params.page = 1;
+        }
+
+        requestStoreTable.params.query = query;
+        _store__WEBPACK_IMPORTED_MODULE_7__["default"].dispatch('tableadmin/initTable', requestStoreTable);
+      } else if (Object.keys(to.query).length === 0) {
+        if (requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0) _store__WEBPACK_IMPORTED_MODULE_7__["default"].dispatch('tableadmin/resetTable');
+      }
+
+      next();
     } else {
-      requestStoreTable.params.page = 1;
+      next({
+        name: 'Login'
+      });
     }
-
-    requestStoreTable.params.query = query;
-    _store__WEBPACK_IMPORTED_MODULE_7__["default"].dispatch('tableadmin/initTable', requestStoreTable);
-  } else if (Object.keys(to.query).length === 0) {
-    if (requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0) _store__WEBPACK_IMPORTED_MODULE_7__["default"].dispatch('tableadmin/resetTable');
+  } else {
+    next();
   }
-
-  next();
 });
 var app = new Vue({
   el: '#app',
@@ -2315,10 +2343,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "routes": () => (/* binding */ routes)
 /* harmony export */ });
 var routes = [{
+  name: 'Login',
+  path: '/login',
+  meta: {
+    title: 'Iniciar sesión'
+  },
+  component: function component() {
+    return __webpack_require__.e(/*! import() | Login */ "Login").then(__webpack_require__.bind(__webpack_require__, /*! ../views/auth/Login.vue */ "./resources/js/views/auth/Login.vue"));
+  }
+}, {
+  name: 'RecoverKey',
+  path: '/recuperar-usuario',
+  meta: {
+    title: 'Recuperar Usuario'
+  },
+  component: function component() {
+    return __webpack_require__.e(/*! import() | RecoverKey */ "RecoverKey").then(__webpack_require__.bind(__webpack_require__, /*! ../views/auth/RecoverKey.vue */ "./resources/js/views/auth/RecoverKey.vue"));
+  }
+}, {
   name: 'Home',
   path: '/',
   meta: {
-    title: 'Inicio'
+    title: 'Inicio',
+    requireAuth: true
   },
   component: function component() {
     return __webpack_require__.e(/*! import() | Inicio */ "Inicio").then(__webpack_require__.bind(__webpack_require__, /*! ../views/Inicio.vue */ "./resources/js/views/Inicio.vue"));
@@ -2327,7 +2374,8 @@ var routes = [{
   name: 'Operation',
   path: '/operacion',
   meta: {
-    title: 'Operación'
+    title: 'Operación',
+    requireAuth: true
   },
   component: function component() {
     return __webpack_require__.e(/*! import() | Operacion */ "Operacion").then(__webpack_require__.bind(__webpack_require__, /*! ../views/operacion/Operacion.vue */ "./resources/js/views/operacion/Operacion.vue"));
@@ -2433,6 +2481,9 @@ var routes = [{
 }, {
   name: 'Configuacion',
   path: '/configuracion',
+  meta: {
+    requireAuth: true
+  },
   component: function component() {
     return __webpack_require__.e(/*! import() | Configuracion */ "Configuracion").then(__webpack_require__.bind(__webpack_require__, /*! ../views/configuracion/Configuacion.vue */ "./resources/js/views/configuracion/Configuacion.vue"));
   },
@@ -2636,6 +2687,94 @@ var routes = [{
 
 /***/ }),
 
+/***/ "./resources/js/store/auth/index.js":
+/*!******************************************!*\
+  !*** ./resources/js/store/auth/index.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+
+var auth = {
+  namespaced: true,
+  state: function state() {
+    return {
+      loginStatus: false //propiedad, que se encarga de actualizar si esta autentificado o no,
+      //role: '',
+      //permissions: []
+
+    };
+  },
+  mutations: {
+    setUserLogged: function setUserLogged(state, user) {
+      js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].set("usuario", user.access_token, {
+        expires: new Date(user.expires_at)
+      });
+      window.location.href = "http://127.0.0.1:8000/"; //state.loginStatus = true;
+      //state.role = ( user.role == 'cliente' ) ? state.role : user.rol;
+    },
+    updatedUserStatus: function updatedUserStatus(state, status) {
+      state.loginStatus = status;
+    },
+    userLogout: function userLogout(state) {
+      state.loginStatus = false;
+      js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove('usuario');
+      window.location.href = "http://127.0.0.1:8000/";
+    }
+    /*set_role_permissions(state, role_permissions){
+        state.role = role_permissions.role;
+        for (let i = 0; i < role_permissions.permissions.length; i++) {
+            state.permissions.push(role_permissions.permissions[i]);
+        }
+    }*/
+
+  },
+  getters: {
+    getUserLogged: function getUserLogged() {
+      return js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get("usuario") != undefined ? true : false;
+    },
+    getUserStatus: function getUserStatus(state) {
+      return state.loginStatus;
+    },
+
+    /*getUserRol: (state) => {
+        return state.role;
+    },
+    getUserPermissions: (state) => {
+        return state.permissions;
+    },*/
+    getToken: function getToken() {
+      return js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].get("usuario");
+    }
+  },
+  actions: {
+    login: function login(_ref, user) {
+      var commit = _ref.commit;
+      commit('setUserLogged', user);
+    },
+    logout: function logout(_ref2) {
+      var commit = _ref2.commit;
+      commit('userLogout');
+    },
+    update_status: function update_status(_ref3, statusAuth) {
+      var commit = _ref3.commit;
+      commit('updatedUserStatus', statusAuth);
+    }
+    /*role_permissions({commit}, role_permissions){
+        commit('set_role_permissions', role_permissions)
+    }*/
+
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (auth);
+
+/***/ }),
+
 /***/ "./resources/js/store/index.js":
 /*!*************************************!*\
   !*** ./resources/js/store/index.js ***!
@@ -2647,16 +2786,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _tableadmin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tableadmin */ "./resources/js/store/tableadmin/index.js");
+/* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth */ "./resources/js/store/auth/index.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]); //const debug = process.env.NODE_ENV !== 'production'
 
-var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_3__["default"]); //const debug = process.env.NODE_ENV !== 'production'
+
+var store = new vuex__WEBPACK_IMPORTED_MODULE_3__["default"].Store({
   modules: {
+    auth: _auth__WEBPACK_IMPORTED_MODULE_1__["default"],
     tableadmin: _tableadmin__WEBPACK_IMPORTED_MODULE_0__["default"]
   } //strict: debug
 
@@ -2841,6 +2983,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 var validation = {
   attributes: {
+    email: 'Correo Electrónico',
+    password: 'Contraseña',
     nombre: 'Nombre',
     abreviatura: 'Abreviatura',
     id_pais: 'Pais',
@@ -2852,7 +2996,17 @@ var validation = {
     corto_ceco: 'Corto Ceco',
     nombre_proveedor: 'Nombre Proveedor',
     nit_proveedor: 'Nit Proveedor',
-    id_cond_proveedor: 'Condición Proveedor'
+    id_cond_proveedor: 'Condición Proveedor',
+    id_moneda_erp: 'Id Moneda',
+    id_moneda_cambio: 'Moneda',
+    monto_tc: 'Monto Tasa de Cambio',
+    fecha_tc: 'Fecha Tasa de Cambio',
+    id_moneda_nc: 'Moneda Nacional',
+    id_moneda_divisa: 'Moneda Extranjera',
+    id_pais_erp: 'Id Pais',
+    id_empresa_erp: 'Id Empresa',
+    clave: 'Clave',
+    id_ceco_erp: 'Id Ceco'
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (validation);
@@ -31634,6 +31788,155 @@ var index = {
 
 
 
+/***/ }),
+
+/***/ "./node_modules/js-cookie/dist/js.cookie.mjs":
+/*!***************************************************!*\
+  !*** ./node_modules/js-cookie/dist/js.cookie.mjs ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/*! js-cookie v3.0.1 | MIT */
+/* eslint-disable no-var */
+function assign (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+    for (var key in source) {
+      target[key] = source[key];
+    }
+  }
+  return target
+}
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+var defaultConverter = {
+  read: function (value) {
+    if (value[0] === '"') {
+      value = value.slice(1, -1);
+    }
+    return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent)
+  },
+  write: function (value) {
+    return encodeURIComponent(value).replace(
+      /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
+      decodeURIComponent
+    )
+  }
+};
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+
+function init (converter, defaultAttributes) {
+  function set (key, value, attributes) {
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    attributes = assign({}, defaultAttributes, attributes);
+
+    if (typeof attributes.expires === 'number') {
+      attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
+    }
+    if (attributes.expires) {
+      attributes.expires = attributes.expires.toUTCString();
+    }
+
+    key = encodeURIComponent(key)
+      .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
+      .replace(/[()]/g, escape);
+
+    var stringifiedAttributes = '';
+    for (var attributeName in attributes) {
+      if (!attributes[attributeName]) {
+        continue
+      }
+
+      stringifiedAttributes += '; ' + attributeName;
+
+      if (attributes[attributeName] === true) {
+        continue
+      }
+
+      // Considers RFC 6265 section 5.2:
+      // ...
+      // 3.  If the remaining unparsed-attributes contains a %x3B (";")
+      //     character:
+      // Consume the characters of the unparsed-attributes up to,
+      // not including, the first %x3B (";") character.
+      // ...
+      stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+    }
+
+    return (document.cookie =
+      key + '=' + converter.write(value, key) + stringifiedAttributes)
+  }
+
+  function get (key) {
+    if (typeof document === 'undefined' || (arguments.length && !key)) {
+      return
+    }
+
+    // To prevent the for loop in the first place assign an empty array
+    // in case there are no cookies at all.
+    var cookies = document.cookie ? document.cookie.split('; ') : [];
+    var jar = {};
+    for (var i = 0; i < cookies.length; i++) {
+      var parts = cookies[i].split('=');
+      var value = parts.slice(1).join('=');
+
+      try {
+        var foundKey = decodeURIComponent(parts[0]);
+        jar[foundKey] = converter.read(value, foundKey);
+
+        if (key === foundKey) {
+          break
+        }
+      } catch (e) {}
+    }
+
+    return key ? jar[key] : jar
+  }
+
+  return Object.create(
+    {
+      set: set,
+      get: get,
+      remove: function (key, attributes) {
+        set(
+          key,
+          '',
+          assign({}, attributes, {
+            expires: -1
+          })
+        );
+      },
+      withAttributes: function (attributes) {
+        return init(this.converter, assign({}, this.attributes, attributes))
+      },
+      withConverter: function (converter) {
+        return init(assign({}, this.converter, converter), this.attributes)
+      }
+    },
+    {
+      attributes: { value: Object.freeze(defaultAttributes) },
+      converter: { value: Object.freeze(converter) }
+    }
+  )
+}
+
+var api = init(defaultConverter, { path: '/' });
+/* eslint-enable no-var */
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (api);
+
+
 /***/ })
 
 /******/ 	});
@@ -31748,7 +32051,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"Inicio":1,"Operacion":1,"Proveedores":1,"Facturas":1,"ProveedorCreate":1,"ProveedorEditar":1,"SubirProveedores":1,"SubirFacturas":1,"Configuracion":1,"Paises":1,"PaisesCreate":1,"Monedas":1,"CrearMoneda":1,"Tipos de Cambios":1,"CrearTiposCambios":1,"EditarTazasCambios":1,"Empresas":1,"EmpresasCreate":1,"Cecos":1,"CecosCreate":1,"HeaderComponent":1,"TableComponent":1,"resources_js_components_forms_FormOneComponent_vue":1,"resources_js_components_LoaderComponent_vue":1,"resources_js_components_Error404Component_vue":1,"AlertMessageComponent":1,"LoadMassiveComponenet":1,"resources_js_components_LoaderWhiteComponent_vue":1,"resources_js_components_tables_datatables_SkeletonDataTables_vue":1,"resources_js_components_tables_pagination_SkeletonPagination_vue":1,"resources_js_components_tables_pagination_PaginationComponent_vue":1,"resources_js_components_ConfirmDeleteModal_vue":1,"resources_js_components_tables_datatables_CecosDataTable_vue":1,"resources_js_components_tables_datatables_EmpresasDataTable_vue":1,"resources_js_components_tables_datatables_FacturasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosTazasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasDataTable_vue":1,"resources_js_components_tables_datatables_PaisesDataTable_vue":1,"resources_js_components_tables_datatables_ProveedoresDataTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"Login":1,"RecoverKey":1,"Inicio":1,"Operacion":1,"Proveedores":1,"Facturas":1,"ProveedorCreate":1,"ProveedorEditar":1,"SubirProveedores":1,"SubirFacturas":1,"Configuracion":1,"Paises":1,"PaisesCreate":1,"Monedas":1,"CrearMoneda":1,"Tipos de Cambios":1,"CrearTiposCambios":1,"EditarTazasCambios":1,"Empresas":1,"EmpresasCreate":1,"Cecos":1,"CecosCreate":1,"HeaderComponent":1,"AlertMessageComponent":1,"TableComponent":1,"resources_js_components_forms_FormOneComponent_vue":1,"resources_js_components_LoaderComponent_vue":1,"resources_js_components_Error404Component_vue":1,"LoadMassiveComponenet":1,"resources_js_components_LoaderWhiteComponent_vue":1,"resources_js_components_tables_datatables_SkeletonDataTables_vue":1,"resources_js_components_tables_pagination_SkeletonPagination_vue":1,"resources_js_components_tables_pagination_PaginationComponent_vue":1,"resources_js_components_ConfirmDeleteModal_vue":1,"resources_js_components_tables_datatables_CecosDataTable_vue":1,"resources_js_components_tables_datatables_EmpresasDataTable_vue":1,"resources_js_components_tables_datatables_FacturasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosTazasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasDataTable_vue":1,"resources_js_components_tables_datatables_PaisesDataTable_vue":1,"resources_js_components_tables_datatables_ProveedoresDataTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 
 
 import tableadmin from './tableadmin'
+import auth from './auth'
 
 
 
@@ -13,7 +14,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     modules: {
-     tableadmin
+      auth,
+      tableadmin
     },
     //strict: debug
 })

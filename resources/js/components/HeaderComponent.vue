@@ -30,19 +30,16 @@
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                         <!--<span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>-->
                         <div class="d-none d-xl-block ps-2">
-                            <div>Paweł Kuna</div>
-                            <div class="mt-1 small text-muted">UI Designer</div>
+                            <div>{{user.nombre_usuario}}</div>
+                            <div class="mt-1 small text-muted">Administrador</div>
                         </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <a href="#" class="dropdown-item">Set status</a>
-                        <a href="#" class="dropdown-item">Profile &amp; account</a>
-                        <a href="#" class="dropdown-item">Feedback</a>
+                            <!--<a href="#" class="dropdown-item"><span class="ti ti-user-circle me-1 icon-left-user-account"></span> Perfil</a>-->
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        <a href="#" class="dropdown-item">Logout</a>
+                            <button href="#" @click="logout" class="dropdown-item"><span class="ti ti-logout me-1 icon-left-user-account"></span> Salir</button>
                         </div>
                     </div>
                 </div>
@@ -53,7 +50,7 @@
             <div class="navbar navbar-light">
                 <div class="container-xl">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <li class="nav-item" :class="{'active': this.$route.name == 'Home' }">
                         <router-link class="nav-link" :to="{name:'Home'}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <i class="ti ti-home-2"></i>
@@ -63,34 +60,34 @@
                             </span>
                         </router-link>
                     </li>
-                    <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-briefcase"></i>
-                        </span>
-                        <span class="nav-link-title">
-                        Operación
-                        </span>
-                    </a>
+                    <li class="nav-item dropdown" :class="{'active': this.$route.matched.length != 0 && this.$route.matched[0].name == 'Operation' }">
+                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <i class="ti ti-briefcase"></i>
+                            </span>
+                            <span class="nav-link-title">
+                            Operación
+                            </span>
+                        </a>
                     <div class="dropdown-menu">
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
-                                <router-link class="dropdown-item" :to="{ name: 'OpFacturasIndex'}">Facturas</router-link>
-                                   <router-link class="dropdown-item" :to="{ name: 'OpProveedoresIndex'}">Proveedores</router-link>
+                                <router-link class="dropdown-item" :class="{'active': this.$route.name == 'OpFacturasIndex' }" :to="{ name: 'OpFacturasIndex'}">Facturas</router-link>
+                                   <router-link class="dropdown-item" :class="{'active': this.$route.name == 'OpProveedoresIndex' }" :to="{ name: 'OpProveedoresIndex'}">Proveedores</router-link>
                                 <div class="dropend">
-                                    <button class="dropdown-item dropdown-toggle" type="buton" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <button class="dropdown-item dropdown-toggle" type="buton" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" :class="{'active': this.$route.matched.length > 1 && this.$route.matched[1].name == 'OpConfiguacion' }">
                                        Configuración
                                     </button>
                                     <div class="dropdown-menu">
-                                        <router-link :to="{ name:'ConfigProveedoresIndex' }" class="dropdown-item">Gestión Proveedores</router-link>
-                                        <router-link :to="{ name:'ConfigFacturaCreate' }" class="dropdown-item">Carga Manual de Movimientos</router-link>
+                                        <router-link :to="{ name:'ConfigProveedoresIndex' }" class="dropdown-item" :class="{'active':this.$route.matched.length > 2 &&  this.$route.matched[2].name == 'OpConfigProveedoresIndex' }">Gestión Proveedores</router-link>
+                                        <router-link :to="{ name:'ConfigFacturaCreate' }" class="dropdown-item" :class="{'active': this.$route.name == 'ConfigFacturaCreate' }">Carga Manual de Movimientos</router-link>
                                         <div class="dropend">
-                                            <button class="dropdown-item dropdown-toggle" type="buton" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                            <button class="dropdown-item dropdown-toggle" type="buton" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" :class="{'active':this.$route.matched.length > 2 && this.$route.matched[2].name == 'OpCargaMasiva' }">
                                             Carga Masiva
                                             </button>
                                             <div class="dropdown-menu">
-                                                <router-link class="dropdown-item" :to="{ name: 'SubirProveedores' }">Proveedores</router-link>
-                                                <router-link class="dropdown-item" :to="{ name: 'SubirFacturas' }">Facturas</router-link>
+                                                <router-link class="dropdown-item" :to="{ name: 'SubirProveedores' }" :class="{'active': this.$route.name == 'SubirProveedores' }">Proveedores</router-link>
+                                                <router-link class="dropdown-item" :to="{ name: 'SubirFacturas' }" :class="{'active': this.$route.name == 'SubirFacturas' }">Facturas</router-link>
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +126,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" :class="{'active': this.$route.matched.length != 0 && this.$route.matched[0].name == 'Configuacion' }">
                         <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <i class="ti ti-settings"></i>
@@ -141,18 +138,18 @@
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <router-link class="dropdown-item" :to="{ name:'PaisesIndex' }">Gestión Paises</router-link>
+                                    <router-link class="dropdown-item" :to="{ name:'PaisesIndex' }"  :class="{'active':this.$route.matched.length > 1 &&  this.$route.matched[1].name == 'Paises' }">Gestión Paises</router-link>
                                     <div class="dropend">
-                                        <button class="dropdown-item dropdown-toggle" type="buton" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <button class="dropdown-item dropdown-toggle" type="buton" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" :class="{'active':this.$route.matched.length > 1 &&  this.$route.matched[1].name == 'Monedas' }">
                                            Gestión Monedas
                                         </button>
                                         <div class="dropdown-menu">
-                                            <router-link class="dropdown-item" :to="{ name: 'MonedasIndex' }">Monedas</router-link>
-                                            <router-link class="dropdown-item" :to="{ name: 'MonedasCambiosIndex' }">Tipos de Cambios</router-link>
+                                            <router-link class="dropdown-item" :to="{ name: 'MonedasIndex' }" :class="{'active':this.$route.matched.length > 1 &&  this.$route.matched[1].name == 'Monedas' && this.$route.matched[2].name != 'MonedasCambios' && this.$route.matched[2].name != 'TazasCambios' }">Monedas</router-link>
+                                            <router-link class="dropdown-item" :to="{ name: 'MonedasCambiosIndex' }" :class="{'active':this.$route.matched.length > 2 && ( this.$route.matched[2].name == 'MonedasCambios' || this.$route.matched[2].name == 'TazasCambios' ) }">Tipos de Cambios</router-link>
                                         </div>
                                     </div>
-                                    <router-link class="dropdown-item" :to="{ name:'EmpresasIndex' }">Gestión Empresas</router-link>
-                                    <router-link class="dropdown-item" :to="{ name:'CecosIndex' }">Gestión Cecos</router-link>
+                                    <router-link class="dropdown-item" :to="{ name:'EmpresasIndex' }" :class="{'active':this.$route.matched.length > 1 &&  this.$route.matched[1].name == 'Empresas' }">Gestión Empresas</router-link>
+                                    <router-link class="dropdown-item" :to="{ name:'CecosIndex' }" :class="{'active':this.$route.matched.length > 1 &&  this.$route.matched[1].name == 'Cecos' }">Gestión Cecos</router-link>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +164,34 @@
 <script>
 export default {
     name: 'HeaderComponent',
-
+    data(){
+        return {
+            user: {
+                nombre_usuario: ''
+            }
+        }
+    },
+    beforeCreate(){
+        this.$nextTick(async function () {
+           if( this.user.nombre_usuario == '' ){
+                await this.axios.get('user').then(response => {
+                    this.user = response.data.user;
+                }).catch(error => {
+                    console.log(error.response)
+                });
+           }
+           console.log(this.$route);
+        }) 
+    },
+    methods: {
+        async logout(){
+            await this.axios.post('logout').then(response => {
+                this.$store.dispatch('auth/logout');
+            }).catch(error => {
+                console.log(error.response)
+            });
+        }
+    }
 };
 </script>
 <style>
@@ -209,6 +233,11 @@ export default {
 
     .header-menu .navbar-light .nav-item.active::after{
         bottom: -0.59rem;
+    }
+
+    .icon-left-user-account{
+        font-size: 16px;
+        line-height: 1;
     }
     
 

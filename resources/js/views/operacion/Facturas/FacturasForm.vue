@@ -11,7 +11,7 @@
                         <div class="mb-3">
                             <label class="form-label"> Agregar el NIT del Proveedor</label>
                             <div class="form-floating">
-                                <input type="text"   class="form-control dropdown-toggle" data-bs-toggle="dropdown" v-model="factura.proveedor" value="" id="proveedor" name="proveedor" @keyup="inputSearch($event)" aria-expanded="false" v-validate="'required'" data-vv-validate-on="change" :class="{'is-invalid': errors.first('proveedor')}">
+                                <input type="text"   class="form-control dropdown-toggle" data-bs-toggle="dropdown" v-model="factura.proveedor" value="" id="proveedor" name="C" @keyup="inputSearch($event)" aria-expanded="false" v-validate="'required'" data-vv-validate-on="change" :class="{'is-invalid': errors.first('proveedor')}">
                                 <label for="proveedor">Buscar Proveedor por Nombre ó Nit</label>
                                 <ul class="dropdown-menu input-result-search" id="proveedor">
                                     <li v-for="(proveedor, index) in proveedores" :key="index" >

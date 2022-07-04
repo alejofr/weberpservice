@@ -107,7 +107,7 @@ var Error404 = function Error404() {
             id: 'abreviatura',
             label: {
               title: 'Abreviatura Moneda',
-              "for": 'aabreviatura'
+              "for": 'abreviatura'
             }
           }]
         }] //fin row

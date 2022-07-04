@@ -20,7 +20,7 @@ export default {
     name: 'WeberpserviceApp',
     computed: {
         headerIs(){
-            return HeaderComponent
+            return (this.$store.getters['auth/getUserStatus']) ? HeaderComponent : ''
         }
     },
     methods: {

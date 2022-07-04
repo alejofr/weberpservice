@@ -1,5 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/Login.js": "/js/Login.js",
+    "/js/RecoverKey.js": "/js/RecoverKey.js",
     "/js/Inicio.js": "/js/Inicio.js",
     "/js/Operacion.js": "/js/Operacion.js",
     "/js/Proveedores.js": "/js/Proveedores.js",
@@ -21,8 +23,8 @@
     "/js/Cecos.js": "/js/Cecos.js",
     "/js/CecosCreate.js": "/js/CecosCreate.js",
     "/js/HeaderComponent.js": "/js/HeaderComponent.js",
-    "/js/TableComponent.js": "/js/TableComponent.js",
     "/js/AlertMessageComponent.js": "/js/AlertMessageComponent.js",
+    "/js/TableComponent.js": "/js/TableComponent.js",
     "/js/LoadMassiveComponenet.js": "/js/LoadMassiveComponenet.js",
     "/css/app.css": "/css/app.css"
 }

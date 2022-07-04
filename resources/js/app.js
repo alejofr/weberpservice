@@ -13,6 +13,23 @@ import store  from './store';
 Vue.use(VueAxios, axios);
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.MIX_APP_API_URL;
+
+if ( store.getters['auth/getUserLogged'] ){
+    if ( !store.getters['auth/getUserStatus'] ){
+        store.dispatch('auth/update_status', true);
+    }
+        
+    axios.interceptors.request.use(function (config) {
+        if ( store.getters['auth/getUserStatus'] ){
+            let headers = {
+               'Authorization' : "Bearer "+store.getters['auth/getToken']
+            };
+            config['headers'] = headers;
+        }
+        return config;
+    });
+}
+
 Vue.use(VueRouter);
 import vTitle from 'vuejs-title'
 Vue.use(vTitle)
@@ -51,27 +68,35 @@ router.beforeEach((to, from, next) => {
     document.title = process.env.MIX_APP_NAME +' - '+ to.meta.title;
     console.log(store.getters['tableadmin/getRequest'])
     const requestStoreTable =  { ...store.getters['tableadmin/getRequest'] };
-
-    if ( requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0 && Object.keys(to.query).length != 0 ){
-        let query = to.query;
-        console.log(query);
-        console.log("paso por aqui")
-    
-        if( query.hasOwnProperty('page') ){
-            requestStoreTable.params.page = parseInt(query.page)
-            delete query.page
+    if(to.meta.requireAuth){
+        if (store.getters['auth/getUserStatus']) {
+            if ( requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0 && Object.keys(to.query).length != 0 ){
+                let query = to.query;
+                console.log(query);
+                console.log("paso por aqui")
+            
+                if( query.hasOwnProperty('page') ){
+                    requestStoreTable.params.page = parseInt(query.page)
+                    delete query.page
+                }else{
+                    requestStoreTable.params.page = 1
+                }
+        
+                requestStoreTable.params.query = query;
+                store.dispatch('tableadmin/initTable', requestStoreTable);
+            }else if( Object.keys(to.query).length === 0 ){
+                if( requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0 )
+                    store.dispatch('tableadmin/resetTable');
+            }
+          
+            next();
         }else{
-            requestStoreTable.params.page = 1
+            next({ name: 'Login' })
         }
 
-        requestStoreTable.params.query = query;
-        store.dispatch('tableadmin/initTable', requestStoreTable);
-    }else if( Object.keys(to.query).length === 0 ){
-        if( requestStoreTable.url != '' && Object.keys(requestStoreTable.params).length != 0 )
-            store.dispatch('tableadmin/resetTable');
+    }else{
+        next();
     }
-  
-    next();
 })
 
 const app = new Vue({

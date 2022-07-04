@@ -81,7 +81,7 @@ export default {
                                 id: 'abreviatura',
                                 label: {
                                     title: 'Abreviatura Moneda',
-                                    for: 'aabreviatura'
+                                    for: 'abreviatura'
                                 }
                             },
                         ]

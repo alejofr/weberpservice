@@ -1,6 +1,6 @@
 <template>
     <div>
-        Inicio
+        
     </div>
 </template>
 <script>

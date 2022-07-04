@@ -42,7 +42,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id_usuario', 
+        'usuario_id', 
         'nombre_usuario',
         'nombre_completo', 
         'email', 
@@ -78,7 +78,7 @@ class User extends Authenticatable
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->id_usuario = (string) Uuid::generate(4);
+            $model->usuario_id = (string) Uuid::generate(4);
         });
     }
 }

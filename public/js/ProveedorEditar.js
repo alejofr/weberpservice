@@ -955,7 +955,7 @@ var render = function () {
                     "data-bs-toggle": "dropdown",
                     value: "",
                     id: "proveedor",
-                    name: "proveedor",
+                    name: "C",
                     "aria-expanded": "false",
                     "data-vv-validate-on": "change",
                   },

@@ -1,14 +1,26 @@
 export const routes = [
     {
+		name: 'Login',
+		path: '/login',
+		meta: { title: 'Iniciar sesión' },
+		component: () => import(/* webpackChunkName: "Login" */ '../views/auth/Login.vue')
+	},
+    {
+		name: 'RecoverKey',
+		path: '/recuperar-usuario',
+		meta: { title: 'Recuperar Usuario' },
+		component: () => import(/* webpackChunkName: "RecoverKey" */ '../views/auth/RecoverKey.vue')
+	},
+    {
 		name: 'Home',
 		path: '/',
-		meta: { title: 'Inicio' },
+		meta: { title: 'Inicio', requireAuth: true },
 		component: () => import(/* webpackChunkName: "Inicio" */ '../views/Inicio.vue')
 	},
     {
 		name: 'Operation',
 		path: '/operacion',
-		meta: { title: 'Operación' },
+		meta: { title: 'Operación', requireAuth: true },
 		component:  () => import(/* webpackChunkName: "Operacion" */ '../views/operacion/Operacion.vue'),
         children: [
             {
@@ -85,6 +97,7 @@ export const routes = [
     {
         name:'Configuacion',
         path: '/configuracion',
+        meta: {requireAuth: true},
 		component:  () => import(/* webpackChunkName: "Configuracion" */ '../views/configuracion/Configuacion.vue'),
         children: [
             {
