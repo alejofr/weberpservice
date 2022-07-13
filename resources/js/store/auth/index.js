@@ -10,7 +10,7 @@ const auth = {
     mutations: {
         setUserLogged(state, user){
             Cookies.set("usuario", user.access_token, { expires: new Date (user.expires_at) });
-            window.location.href = "http://127.0.0.1:8000/"
+            window.location.href = process.env.MIX_APP_URL
             //state.loginStatus = true;
             //state.role = ( user.role == 'cliente' ) ? state.role : user.rol;
         },
@@ -20,7 +20,7 @@ const auth = {
         userLogout(state){
             state.loginStatus = false;
             Cookies.remove('usuario')
-            window.location.href = "http://127.0.0.1:8000/"
+            window.location.href = process.env.MIX_APP_URL
         },
         /*set_role_permissions(state, role_permissions){
             state.role = role_permissions.role;

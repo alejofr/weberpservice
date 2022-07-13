@@ -2237,7 +2237,7 @@ window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js
 
 Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_1__["default"], (axios__WEBPACK_IMPORTED_MODULE_0___default()));
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.withCredentials) = true;
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = "http://127.0.0.1:8000/api/";
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = "http://127.0.0.1:8000";
 
 if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserLogged"]) {
   if (!_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserStatus"]) {
@@ -2715,7 +2715,7 @@ var auth = {
       js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].set("usuario", user.access_token, {
         expires: new Date(user.expires_at)
       });
-      window.location.href = "http://127.0.0.1:8000/"; //state.loginStatus = true;
+      window.location.href = "http://127.0.0.1:8000"; //state.loginStatus = true;
       //state.role = ( user.role == 'cliente' ) ? state.role : user.rol;
     },
     updatedUserStatus: function updatedUserStatus(state, status) {
@@ -2724,7 +2724,7 @@ var auth = {
     userLogout: function userLogout(state) {
       state.loginStatus = false;
       js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove('usuario');
-      window.location.href = "http://127.0.0.1:8000/";
+      window.location.href = "http://127.0.0.1:8000";
     }
     /*set_role_permissions(state, role_permissions){
         state.role = role_permissions.role;

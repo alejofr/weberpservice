@@ -248,5 +248,7 @@ export const routes = [
 
             },
         ]
-    }
+    },
+    //Pagina 404
+	{ path: '/:pathMatch(.*)*', name: 'NotFound', meta: { title: 'Pagina No Encontrada' }, component: () => import(/* webpackChunkName: "Error404" */ '../components/Error404Component.vue') }
 ];

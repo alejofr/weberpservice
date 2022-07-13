@@ -12,7 +12,7 @@ import store  from './store';
 
 Vue.use(VueAxios, axios);
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = process.env.MIX_APP_API_URL;
+axios.defaults.baseURL = process.env.MIX_APP_URL;
 
 if ( store.getters['auth/getUserLogged'] ){
     if ( !store.getters['auth/getUserStatus'] ){
