@@ -2206,7 +2206,7 @@ var HeaderComponent = function HeaderComponent() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.esm.min.js");
@@ -2217,8 +2217,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router_routes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./router/routes */ "./resources/js/router/routes.js");
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
-/* harmony import */ var vuejs_title__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuejs-title */ "./node_modules/vuejs-title/dist/vuejs-title.esm.js");
-/* harmony import */ var vuejs_title__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vuejs_title__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var vuejs_title__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuejs-title */ "./node_modules/vuejs-title/dist/vuejs-title.esm.js");
+/* harmony import */ var vuejs_title__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(vuejs_title__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -2235,9 +2236,9 @@ window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js
 
 
 
-Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_1__["default"], (axios__WEBPACK_IMPORTED_MODULE_0___default()));
+vue__WEBPACK_IMPORTED_MODULE_8__["default"].use(vue_axios__WEBPACK_IMPORTED_MODULE_1__["default"], (axios__WEBPACK_IMPORTED_MODULE_0___default()));
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.withCredentials) = true;
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = "http://127.0.0.1:8000";
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = "http://weberpservice.test";
 
 if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserLogged"]) {
   if (!_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserStatus"]) {
@@ -2256,10 +2257,11 @@ if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters["auth/getUserLogged"]
   });
 }
 
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_8__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_8__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
-Vue.use((vuejs_title__WEBPACK_IMPORTED_MODULE_9___default()));
-Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_2__["default"], {
+
+vue__WEBPACK_IMPORTED_MODULE_8__["default"].use((vuejs_title__WEBPACK_IMPORTED_MODULE_10___default()));
+vue__WEBPACK_IMPORTED_MODULE_8__["default"].use(vee_validate__WEBPACK_IMPORTED_MODULE_2__["default"], {
   classes: true,
   classNames: {
     valid: "is-valid",
@@ -2280,7 +2282,7 @@ vee_validate__WEBPACK_IMPORTED_MODULE_2__["default"].Validator.extend('customAlp
 });
 vee_validate__WEBPACK_IMPORTED_MODULE_2__.Validator.localize('es', (vee_validate_dist_locale_es__WEBPACK_IMPORTED_MODULE_3___default()));
 vee_validate__WEBPACK_IMPORTED_MODULE_2__.Validator.localize('es', _validation__WEBPACK_IMPORTED_MODULE_4__["default"]);
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_8__["default"]({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_9__["default"]({
   mode: 'history',
   routes: _router_routes__WEBPACK_IMPORTED_MODULE_5__.routes
 });
@@ -2320,7 +2322,7 @@ router.beforeEach(function (to, from, next) {
     next();
   }
 });
-var app = new Vue({
+var app = new vue__WEBPACK_IMPORTED_MODULE_8__["default"]({
   el: '#app',
   router: router,
   store: _store__WEBPACK_IMPORTED_MODULE_7__["default"],
@@ -2683,6 +2685,16 @@ var routes = [{
       }
     }]
   }]
+}, //Pagina 404
+{
+  path: '/:pathMatch(.*)*',
+  name: 'NotFound',
+  meta: {
+    title: 'Pagina No Encontrada'
+  },
+  component: function component() {
+    return __webpack_require__.e(/*! import() | Error404 */ "Error404").then(__webpack_require__.bind(__webpack_require__, /*! ../components/Error404Component.vue */ "./resources/js/components/Error404Component.vue"));
+  }
 }];
 
 /***/ }),
@@ -2715,7 +2727,7 @@ var auth = {
       js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].set("usuario", user.access_token, {
         expires: new Date(user.expires_at)
       });
-      window.location.href = "http://127.0.0.1:8000"; //state.loginStatus = true;
+      window.location.href = "http://weberpservice.test"; //state.loginStatus = true;
       //state.role = ( user.role == 'cliente' ) ? state.role : user.rol;
     },
     updatedUserStatus: function updatedUserStatus(state, status) {
@@ -2724,7 +2736,7 @@ var auth = {
     userLogout: function userLogout(state) {
       state.loginStatus = false;
       js_cookie__WEBPACK_IMPORTED_MODULE_0__["default"].remove('usuario');
-      window.location.href = "http://127.0.0.1:8000";
+      window.location.href = "http://weberpservice.test";
     }
     /*set_role_permissions(state, role_permissions){
         state.role = role_permissions.role;
@@ -32051,7 +32063,7 @@ var api = init(defaultConverter, { path: '/' });
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"Login":1,"RecoverKey":1,"Inicio":1,"Operacion":1,"Proveedores":1,"Facturas":1,"ProveedorCreate":1,"ProveedorEditar":1,"SubirProveedores":1,"SubirFacturas":1,"Configuracion":1,"Paises":1,"PaisesCreate":1,"Monedas":1,"CrearMoneda":1,"Tipos de Cambios":1,"CrearTiposCambios":1,"EditarTazasCambios":1,"Empresas":1,"EmpresasCreate":1,"Cecos":1,"CecosCreate":1,"HeaderComponent":1,"AlertMessageComponent":1,"TableComponent":1,"resources_js_components_forms_FormOneComponent_vue":1,"resources_js_components_LoaderComponent_vue":1,"resources_js_components_Error404Component_vue":1,"LoadMassiveComponenet":1,"resources_js_components_LoaderWhiteComponent_vue":1,"resources_js_components_tables_datatables_SkeletonDataTables_vue":1,"resources_js_components_tables_pagination_SkeletonPagination_vue":1,"resources_js_components_tables_pagination_PaginationComponent_vue":1,"resources_js_components_ConfirmDeleteModal_vue":1,"resources_js_components_tables_datatables_CecosDataTable_vue":1,"resources_js_components_tables_datatables_EmpresasDataTable_vue":1,"resources_js_components_tables_datatables_FacturasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosTazasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasDataTable_vue":1,"resources_js_components_tables_datatables_PaisesDataTable_vue":1,"resources_js_components_tables_datatables_ProveedoresDataTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"Login":1,"RecoverKey":1,"Inicio":1,"Operacion":1,"Proveedores":1,"Facturas":1,"ProveedorCreate":1,"ProveedorEditar":1,"SubirProveedores":1,"SubirFacturas":1,"Configuracion":1,"Paises":1,"PaisesCreate":1,"Monedas":1,"CrearMoneda":1,"Tipos de Cambios":1,"CrearTiposCambios":1,"EditarTazasCambios":1,"Empresas":1,"EmpresasCreate":1,"Cecos":1,"CecosCreate":1,"Error404":1,"HeaderComponent":1,"AlertMessageComponent":1,"TableComponent":1,"resources_js_components_forms_FormOneComponent_vue":1,"resources_js_components_LoaderComponent_vue":1,"LoadMassiveComponenet":1,"resources_js_components_LoaderWhiteComponent_vue":1,"resources_js_components_tables_datatables_SkeletonDataTables_vue":1,"resources_js_components_tables_pagination_SkeletonPagination_vue":1,"resources_js_components_tables_pagination_PaginationComponent_vue":1,"resources_js_components_ConfirmDeleteModal_vue":1,"resources_js_components_tables_datatables_CecosDataTable_vue":1,"resources_js_components_tables_datatables_EmpresasDataTable_vue":1,"resources_js_components_tables_datatables_FacturasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosDataTable_vue":1,"resources_js_components_tables_datatables_MonedasCambiosTazasDataTable_vue":1,"resources_js_components_tables_datatables_MonedasDataTable_vue":1,"resources_js_components_tables_datatables_PaisesDataTable_vue":1,"resources_js_components_tables_datatables_ProveedoresDataTable_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

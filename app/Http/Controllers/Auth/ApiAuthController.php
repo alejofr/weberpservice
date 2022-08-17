@@ -28,7 +28,7 @@ class ApiAuthController extends Controller
             return response()->json([
                 'status' => 401,
                 'message' => 'Correo Electronico o Contraseña Incorrectas.'
-            ], 403);
+            ], 401);
         }
 
         $tokenResult = $request->user()->createToken('Personal Access Token');

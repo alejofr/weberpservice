@@ -32,6 +32,7 @@ if ( store.getters['auth/getUserLogged'] ){
 
 Vue.use(VueRouter);
 import vTitle from 'vuejs-title'
+import Vue from 'vue';
 Vue.use(vTitle)
 
 Vue.use(VeeValidate, {

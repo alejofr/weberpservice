@@ -22,6 +22,7 @@
     "/js/EmpresasCreate.js": "/js/EmpresasCreate.js",
     "/js/Cecos.js": "/js/Cecos.js",
     "/js/CecosCreate.js": "/js/CecosCreate.js",
+    "/js/Error404.js": "/js/Error404.js",
     "/js/HeaderComponent.js": "/js/HeaderComponent.js",
     "/js/AlertMessageComponent.js": "/js/AlertMessageComponent.js",
     "/js/TableComponent.js": "/js/TableComponent.js",

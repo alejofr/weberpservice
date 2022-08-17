@@ -1,41 +1,48 @@
 <template>
-    <div class="w-100 h-100 img-size-0">
-        <div class="container h-100" >
-            <div class="page-vzlc w-100 h-100">
-                <div class="auth-page">
-                    <component :is='activeComponent' v-bind:alert="alert"></component>
-                    <div class="forn_auth">
-                        <form class="form-lg_auth" method="POST" @submit.prevent="login($event)" name="formLogin">
-                                <div class="form-group mb-3">
-                                    <input type="email" v-model="user.email" name="email" v-validate="'required|email'" placeholder="Correo Electrónico"  class="form-control _input_style-0" :class="{'is-invalid': errors.first('email')}">
-                                    <div v-if="errors.has('email')" class="invalid-feedback">{{errors.first('email')}}</div>
-                                </div>
-                                <div class="form-group mb-3 position-relative">
-                                    <input :type="typePass" v-model="user.password" name="password" v-validate="'required|max:12'" placeholder="Contraseña"  class="form-control _input_style-0" :class="{'is-invalid': errors.first('password')}">
-                                    <button type="button" @click="viewHidePass" class="button button-secondary wp-hide-pw hide-if-no-js"><i :class="pass"></i></button>
-                                    <div v-if="errors.has('password')" class="invalid-feedback">{{errors.first('password')}}</div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <div class="col-6 mt-1">
-                                        <label class="form-check mb-0">
-                                            <input type="checkbox" v-model="user.remenber" value="true" class="form-check-input check-input_0">
-                                            <span class="form-check-label fs-14">Recordarme</span>
-                                        </label>
-                                    </div>
-                                    <div class="col-6 text-end mt-1">
-                                        <router-link class="nav-link text-end justify-content-end cl0 fw-bold fs-14 py-0 px-0" :to="{name:'RecoverKey'}">
-                                            Olvidé mi Contraseña
-                                        </router-link>
-                                    </div>
-                                </div>
-                                <div class="w-100 mb-3">
-                                    <button :type="typeButton" id="btnSubmit" class="btn_style_0 fw-bold mt-3 d-flex align-items-center justify-content-center">
-                                        <i class="ti ti-loader me-2 ti-spin"></i> Iniciar Sessión
-                                    </button>
-                                </div>
-                        </form>
-                    </div>
+    <div class="w-100 class-ejemplo img-size-0" style="background-image: url('images/bg-01.jpg');height: 100vh;">
+        <div class="container h-100" style="max-width: 100%;padding: 0;" >
+            <div class="row h-100" style="margin-right: 0;margin-left: 0;">
+                <div class="col-lg-7 d-none d-lg-block">
                     
+                </div>
+                <div class="col-md-12 col-lg-5 container-auth" style="padding-left: 0;">
+                    <div class="page-vzlc w-100 h-100">
+                        <div class="auth-page">
+                            <component :is='activeComponent' v-bind:alert="alert"></component>
+                            <div class="forn_auth">
+                                <form class="form-lg_auth" method="POST" @submit.prevent="login($event)" name="formLogin">
+                                        <div class="form-group mb-3">
+                                            <input type="email" v-model="user.email" name="email" v-validate="'required|email'" placeholder="Correo Electrónico"  class="form-control _input_style-0" :class="{'is-invalid': errors.first('email')}">
+                                            <div v-if="errors.has('email')" class="invalid-feedback">{{errors.first('email')}}</div>
+                                        </div>
+                                        <div class="form-group mb-3 position-relative">
+                                            <input :type="typePass" v-model="user.password" name="password" v-validate="'required|max:12'" placeholder="Contraseña"  class="form-control _input_style-0" :class="{'is-invalid': errors.first('password')}">
+                                            <button type="button" @click="viewHidePass" class="button button-secondary wp-hide-pw hide-if-no-js"><i :class="pass"></i></button>
+                                            <div v-if="errors.has('password')" class="invalid-feedback">{{errors.first('password')}}</div>
+                                        </div>
+                                        <div class="form-group mb-3 row">
+                                            <div class="col-6 mt-1">
+                                                <label class="form-check mb-0">
+                                                    <input type="checkbox" v-model="user.remenber" value="true" class="form-check-input check-input_0">
+                                                    <span class="form-check-label fs-14">Recordarme</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-6 text-end mt-1">
+                                                <router-link class="nav-link text-end justify-content-end cl0 fw-bold fs-14 py-0 px-0" :to="{name:'RecoverKey'}">
+                                                    Olvidé mi Contraseña
+                                                </router-link>
+                                            </div>
+                                        </div>
+                                        <div class="w-100 mb-3">
+                                            <button :type="typeButton" id="btnSubmit" class="btn_style_0 fw-bold mt-3 d-flex align-items-center justify-content-center">
+                                                <i class="ti ti-loader me-2 ti-spin"></i> Iniciar Sessión
+                                            </button>
+                                        </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,3 +106,17 @@ export default {
     }
 }
 </script>
+<style>
+    .container-auth{
+        background-color: #fff;
+    }
+    @media ( max-width: 992px ){
+        .container-auth{
+            background-color: transparent;
+        }
+        .forn_auth{
+            padding: 40px 25px 30px 25px;
+            min-width: 420px;
+        }
+    }
+</style>

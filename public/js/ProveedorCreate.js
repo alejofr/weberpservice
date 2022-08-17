@@ -37,7 +37,7 @@ var LoaderComponent = function LoaderComponent() {
 };
 
 var Error404 = function Error404() {
-  return __webpack_require__.e(/*! import() */ "resources_js_components_Error404Component_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../../../components/Error404Component.vue */ "./resources/js/components/Error404Component.vue"));
+  return __webpack_require__.e(/*! import() */ "Error404").then(__webpack_require__.bind(__webpack_require__, /*! ../../../components/Error404Component.vue */ "./resources/js/components/Error404Component.vue"));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({

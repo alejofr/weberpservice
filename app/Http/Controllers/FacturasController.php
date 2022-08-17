@@ -82,8 +82,8 @@ class FacturasController extends Controller
         $arreglo = [];
 
         for ($i=0; $i < count($results) ; $i++) { 
-            $tc = 0;
-            $total_mn = 0;
+            $tc = 1;
+            $total_mn = 1;
 
             if( $results[$i]->id_moneda != $results[$i]->id_moneda_pais ){
                $tasa_cambio =  DB::table('wse_monedas_cambios')

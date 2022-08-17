@@ -20,7 +20,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 var Error404 = function Error404() {
-  return __webpack_require__.e(/*! import() */ "resources_js_components_Error404Component_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../../../components/Error404Component.vue */ "./resources/js/components/Error404Component.vue"));
+  return __webpack_require__.e(/*! import() */ "Error404").then(__webpack_require__.bind(__webpack_require__, /*! ../../../components/Error404Component.vue */ "./resources/js/components/Error404Component.vue"));
 };
 
 var tables = function tables() {
